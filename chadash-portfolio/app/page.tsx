@@ -263,7 +263,7 @@ export default function Home() {
       {/* Global Engineering Footer */}
       <footer className="border-t border-gray-800/60 py-8 px-6 text-center text-xs font-mono text-gray-500">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <div>© {new Date().getFullYear()} CHADASH AUTOMATION. ALL REFS RESERVED.</div>
+          <div>© 2026 CHADASH AUTOMATION. ALL REFS RESERVED.</div>
           <div className="flex gap-4 text-gray-400">
             <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-amber-500 transition-colors">GITHUB</a>
             <span className="text-gray-700">//</span>
