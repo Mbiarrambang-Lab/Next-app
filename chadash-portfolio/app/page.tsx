@@ -2,7 +2,7 @@
 
 import React, { useActionState, startTransition } from 'react';
 import Image from 'next/image';
-import { Cpu, Globe, Terminal, ArrowUpRight, AlertTriangle, CheckCircle2, Loader2 } from 'lucide-react';
+import { Cpu, Globe, Terminal, ArrowUpRight, AlertTriangle, CheckCircle2, Loader2, BookAIcon } from 'lucide-react';
 import { transmitPacket } from './actions';
 
 export default function Home() {
@@ -75,7 +75,7 @@ export default function Home() {
             
             {/* Added Documentation Button */}
   <a href="/docs" className="border border-amber-600/40 hover:border-amber-500 bg-amber-950/20 text-amber-400 px-5 py-3 rounded transition-colors flex items-center gap-2">
-    Access Open-Source Curriculum 📚
+    Access Open-Source Curriculum <BookAIcon />
   </a>
 
             <a href="#contact" className="border border-gray-700 hover:border-gray-500 text-gray-300 px-5 py-3 rounded transition-colors">
