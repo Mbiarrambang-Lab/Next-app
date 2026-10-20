@@ -34,13 +34,13 @@ export default function Home() {
           </div>
 
           {/* Nav links expanded spacing */}
-         <nav className="hidden lg:flex items-center gap-x-8 text-xs font-mono font-medium text-gray-400">
-  <a href="#mission" className="hover:text-amber-500 transition-colors tracking-tight">01 // MISSION</a>
-  <a href="#stack" className="hover:text-amber-500 transition-colors tracking-tight">02 // STACK</a>
-  <a href="/projects" className="hover:text-amber-500 transition-colors tracking-tight">03 // SYSTEMS & SHOP</a>
-  <a href="/docs" className="hover:text-amber-500 transition-colors tracking-tight">04 // CURRICULUM & PLC</a> {/* <-- Added Here */}
-  <a href="#contact" className="hover:text-amber-500 transition-colors tracking-tight">05 // TERMINAL</a>
-</nav>
+          <nav className="hidden lg:flex items-center gap-x-8 text-xs font-mono font-medium text-gray-400">
+            <a href="#mission" className="hover:text-amber-500 transition-colors tracking-tight">01 // MISSION</a>
+            <a href="#stack" className="hover:text-amber-500 transition-colors tracking-tight">02 // STACK</a>
+            <a href="/projects" className="hover:text-amber-500 transition-colors tracking-tight">03 // SYSTEMS & SHOP</a>
+            <a href="/docs" className="hover:text-amber-500 transition-colors tracking-tight">04 // CURRICULUM & PLC</a> {/* <-- Added Here */}
+            <a href="#contact" className="hover:text-amber-500 transition-colors tracking-tight">05 // TERMINAL</a>
+          </nav>
 
           <a href="#contact" className="text-xs bg-emerald-950 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded font-mono uppercase tracking-tight flex-shrink-0">
             ● System Online
@@ -72,11 +72,11 @@ export default function Home() {
               Explore Active Deployments
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </a>
-            
+
             {/* Added Documentation Button */}
-  <a href="/docs" className="border border-amber-600/40 hover:border-amber-500 bg-amber-950/20 text-amber-400 px-5 py-3 rounded transition-colors flex items-center gap-2">
-    Access Open-Source Curriculum <BookAIcon />
-  </a>
+            <a href="/docs" className="border border-amber-600/40 hover:border-amber-500 bg-amber-950/20 text-amber-400 px-5 py-3 rounded transition-colors flex items-center gap-2">
+              Access Open-Source Curriculum <BookAIcon />
+            </a>
 
             <a href="#contact" className="border border-gray-700 hover:border-gray-500 text-gray-300 px-5 py-3 rounded transition-colors">
               Request System Architecture
@@ -242,8 +242,8 @@ export default function Home() {
                     <Loader2 className="w-4 h-4 animate-spin text-amber-500" />
                     Modulating Packet Frequencies...
                   </>
-                ) : "Transmit Packet <RocketIcon className='w-4 h-4' />"}
-              </button>
+                ) : "Transmit Packet "}
+                <RocketIcon className='w-4 h-4' /></button>
 
               {/* Status Display Feed */}
               {state && (
