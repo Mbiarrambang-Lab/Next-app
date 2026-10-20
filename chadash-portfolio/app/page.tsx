@@ -2,7 +2,7 @@
 
 import React, { useActionState, startTransition } from 'react';
 import Image from 'next/image';
-import { Cpu, Globe, Terminal, ArrowUpRight, AlertTriangle, CheckCircle2, Loader2, BookAIcon } from 'lucide-react';
+import { Cpu, Globe, Terminal, ArrowUpRight, AlertTriangle, CheckCircle2, Loader2, BookAIcon, RocketIcon } from 'lucide-react';
 import { transmitPacket } from './actions';
 
 export default function Home() {
@@ -242,7 +242,7 @@ export default function Home() {
                     <Loader2 className="w-4 h-4 animate-spin text-amber-500" />
                     Modulating Packet Frequencies...
                   </>
-                ) : "Transmit Packet 🚀"}
+                ) : "Transmit Packet <RocketIcon className='w-4 h-4' />"}
               </button>
 
               {/* Status Display Feed */}
