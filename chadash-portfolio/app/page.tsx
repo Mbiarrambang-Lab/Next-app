@@ -224,7 +224,13 @@ export default function Home() {
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="text-gray-500 text-xs uppercase block">Identity Name</label>
-
+                  <input
+                    name="identity"
+                    type="text"
+                    required
+                    placeholder="Your Name or Call Sign"
+                    className="w-full bg-[#0d1117] border border-gray-800 rounded p-2.5 focus:outline-none focus:border-amber-500 text-gray-200 transition-colors"
+                  />
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-gray-500 text-xs uppercase block">Return Communication Routing (Email)</label>
