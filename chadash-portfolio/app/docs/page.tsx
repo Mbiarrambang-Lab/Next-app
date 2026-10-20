@@ -125,8 +125,8 @@ export default function DocsHub() {
   return (
     <main className="min-h-screen bg-[#0d1117] text-gray-200 font-mono p-6 md:p-12 relative overflow-hidden">
       {/* Blueprint Grid Background Pattern */}
-      <div 
-        className="absolute inset-0 pointer-events-none opacity-20" 
+      <div
+        className="absolute inset-0 pointer-events-none opacity-20"
         style={{
           backgroundImage: `
             linear-gradient(to right, #30363d 1px, transparent 1px),
@@ -143,8 +143,8 @@ export default function DocsHub() {
             <span className="text-xs text-[#d97706] tracking-widest uppercase">CHADASH_AUTOMATION // ENGINEERING KNOWLEDGE BASE</span>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white mt-1">OPEN-SOURCE CURRICULUM & PROTOCOL MANUAL</h1>
           </div>
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="text-xs text-[#10b981] border border-emerald-900 bg-emerald-950/30 px-4 py-2 rounded hover:bg-emerald-900/40 transition-all flex-shrink-0"
           >
             ← RETURN_HOME
@@ -153,39 +153,39 @@ export default function DocsHub() {
 
         {/* Layout Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* Left Sidebar: Phase Selection Directory */}
           <div className="space-y-4">
             <h3 className="text-xs font-bold text-gray-400 tracking-wider uppercase">01 // CURRICULUM STAGES</h3>
-            {modules.map((mod) => (
-              <button
+            {[
+              { id: 'phase-01', num: '01', phase: 'PHASE 01', title: 'Foundations & Serial Comms (Arduino Core)', status: 'Completed' },
+              { id: 'phase-02', num: '02', phase: 'PHASE 02', title: 'Local Bus Protocols & Sensor Arrays (I2C / SPI)', status: 'Completed' },
+              { id: 'phase-03', num: '03', phase: 'PHASE 03', title: 'Wireless IoT & Multi-Node ESP32 Cores', status: 'In Progress' },
+              { id: 'phase-04', num: '04', phase: 'PHASE 04', title: 'Real-Time Edge Safety & MicroPython', status: 'Upcoming' },
+            ].map((mod) => (
+              <Link
                 key={mod.id}
-                onClick={() => setActiveModuleId(mod.id)}
-                className={`w-full text-left p-4 rounded-lg border transition-all ${
-                  activeModuleId === mod.id
-                    ? 'bg-[#161b22] border-[#d97706] shadow-lg shadow-amber-950/20'
-                    : 'bg-[#161b22]/50 border-gray-800 hover:border-gray-700'
-                }`}
+                href={`/docs/${mod.id}`}
+                className="w-full text-left p-4 rounded-lg border transition-all block bg-[#161b22]/50 border-gray-800 hover:border-[#d97706] hover:bg-[#161b22]"
               >
                 <div className="flex justify-between items-center mb-1">
                   <span className="text-xs text-[#d97706]">{mod.phase}</span>
-                  <span className={`text-[10px] px-2 py-0.5 rounded ${
-                    mod.status === 'Completed' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' :
-                    mod.status === 'In Progress' ? 'bg-amber-950 text-amber-400 border border-amber-800' :
-                    'bg-gray-900 text-gray-400 border border-gray-800'
-                  }`}>
+                  <span className={`text-[10px] px-2 py-0.5 rounded ${mod.status === 'Completed' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' :
+                      mod.status === 'In Progress' ? 'bg-amber-950 text-amber-400 border border-amber-800' :
+                        'bg-gray-900 text-gray-400 border border-gray-800'
+                    }`}>
                     {mod.status}
                   </span>
                 </div>
                 <h4 className="text-sm font-semibold text-white">{mod.title}</h4>
-              </button>
+              </Link>
             ))}
           </div>
 
           {/* Right Main Panel: Comprehensive Documentation View */}
           <div className="lg:col-span-2 bg-[#161b22] border border-gray-800 rounded-xl p-6 md:p-8 relative space-y-6">
             <div className="absolute top-4 right-4 text-xs text-gray-500 font-mono">SPEC_ID: #{activeModule.id}</div>
-            
+
             <div>
               <span className="text-xs text-[#d97706] uppercase tracking-widest">{activeModule.phase} TECHNICAL DIRECTORY</span>
               <h2 className="text-2xl font-bold text-white mt-1 mb-2">{activeModule.title}</h2>
@@ -206,7 +206,7 @@ export default function DocsHub() {
                     <span className="text-[#d97706]">#</span> {sub.title}
                   </h4>
                   <p className="text-xs text-gray-400 leading-relaxed">{sub.content}</p>
-                  
+
                   {sub.codeSnippet && (
                     <div className="bg-[#0d1117] border border-gray-800 rounded p-3 text-[11px] font-mono text-emerald-400 overflow-x-auto mt-2">
                       <pre>{sub.codeSnippet}</pre>
@@ -231,7 +231,7 @@ export default function DocsHub() {
             {/* Footer Action Bar */}
             <div className="border-t border-gray-800 pt-6 flex flex-wrap justify-between items-center gap-4">
               <span className="text-xs text-gray-500">Chadash Automation Open-Source Standards</span>
-              <button 
+              <button
                 onClick={() => alert(`Downloading complete specification markdown and code packet for ${activeModule.title}...`)}
                 className="bg-[#d97706] hover:bg-amber-600 text-black font-bold text-xs px-5 py-2.5 rounded transition-all cursor-pointer"
               >
