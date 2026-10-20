@@ -2,7 +2,7 @@
 
 import React, { useActionState, startTransition } from 'react';
 import Image from 'next/image';
-import { Cpu, Globe, Terminal, ArrowUpRight, AlertTriangle, CheckCircle2, Loader2, BookAIcon, RocketIcon } from 'lucide-react';
+import { Cpu, Globe, Terminal, ArrowUpRight, AlertTriangle, CheckCircle2, Loader2, BookAIcon, RocketIcon, ShoppingBasket } from 'lucide-react';
 import { transmitPacket } from './actions';
 
 export default function Home() {
@@ -35,11 +35,14 @@ export default function Home() {
 
           {/* Nav links expanded spacing */}
           <nav className="hidden lg:flex items-center gap-x-8 text-xs font-mono font-medium text-gray-400">
-            <a href="#mission" className="hover:text-amber-500 transition-colors tracking-tight">01 // MISSION</a>
-            <a href="#stack" className="hover:text-amber-500 transition-colors tracking-tight">02 // STACK</a>
-            <a href="/projects" className="hover:text-amber-500 transition-colors tracking-tight">03 // SYSTEMS & SHOP</a>
-            <a href="/docs" className="hover:text-amber-500 transition-colors tracking-tight">04 // CURRICULUM & PLC</a> {/* <-- Added Here */}
-            <a href="#contact" className="hover:text-amber-500 transition-colors tracking-tight">05 // TERMINAL</a>
+            <a href="#mission" className="hover:text-amber-500 transition-colors tracking-tight"> MISSION</a>
+            <a href="#stack" className="hover:text-amber-500 transition-colors tracking-tight"> STACK</a>
+            <a href="#systems" className="hover:text-amber-500 transition-colors tracking-tight"> SYSTEMS</a>
+            <a href="/docs" className="hover:text-amber-500 transition-colors tracking-tight"> CURRICULUM</a>
+            <a href="#contact" className="hover:text-amber-500 transition-colors tracking-tight"> TERMINAL</a>
+            <a href="/shop" className="hover:text-amber-500 transition-colors tracking-tight flex items-center gap-1.5">
+              SHOP <ShoppingBasket className="w-3.5 h-3.5" />
+            </a>
           </nav>
 
           <a href="#contact" className="text-xs bg-emerald-950 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded font-mono uppercase tracking-tight flex-shrink-0">
