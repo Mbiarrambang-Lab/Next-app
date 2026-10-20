@@ -27,7 +27,7 @@ export async function transmitPacket(prevState: any, formData: FormData): Promis
         // Send the email using Resend
         const data = await resend.emails.send({
             from: 'Chadash Automation <onboarding@resend.dev>', // Use onboarding@resend.dev for testing, or your custom domain later
-            to: ['mbiarrambang@gmail.com'], // <-- CHANGE THIS to your personal/business email where you want to receive inquiries
+            to: ['mbiarrambangmbijunior@gmail.com'], // <-- CHANGE THIS to your personal/business email where you want to receive inquiries
             subject: `🚀 New Architecture Inquiry from ${identity}`,
             replyTo: routing, // Allows you to hit "Reply" in your inbox and email the sender directly
             html: `
