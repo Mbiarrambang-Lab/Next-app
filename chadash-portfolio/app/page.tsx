@@ -2,7 +2,7 @@
 
 import React, { useActionState, startTransition } from 'react';
 import Image from 'next/image';
-import { Cpu, ShieldCheck, Mail, ArrowUpRight, AlertTriangle, CheckCircle2, Loader2, BookOpen, ShoppingBag, Send } from 'lucide-react';
+import { Cpu, ShieldCheck, Mail, ArrowUpRight, AlertTriangle, CheckCircle2, Loader2, BookOpen, ShoppingBag, Send, FlagIcon } from 'lucide-react';
 import { transmitPacket } from './actions';
 
 export default function Home() {
@@ -61,15 +61,15 @@ export default function Home() {
         {/* Hero Section */}
         <section id="about" className="space-y-6 max-w-3xl">
           <div className="inline-flex items-center gap-2 bg-amber-950/40 text-amber-400 border border-amber-500/20 px-3.5 py-1.5 text-xs rounded-full font-medium">
-            Engineered in Buea, Cameroon 🇨🇲
+            Engineered in Buea, Cameroon <FlagIcon className="w-3.5 h-3.5" />
           </div>
 
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.1] text-white">
-            Smart automation controllers and custom hardware built for <span className="text-amber-500">reliable performance</span>.
+            Smart automation controllers and custom hardware builds and wiring for <span className="text-amber-500">reliable performance</span>.
           </h1>
 
           <p className="text-gray-300 text-base md:text-lg leading-relaxed">
-            We design and manufacture practical industrial automation tools, smart power controllers, and durable 3D-printed protective enclosures tailored for local businesses and makers worldwide.
+            We design, wire and manufacture practical industrial, residential and commercial automation tools, smart power controllers, and durable 3D-printed protective enclosures tailored for local businesses and makers worldwide.
           </p>
 
           <div className="pt-2 flex flex-wrap gap-4 text-sm">

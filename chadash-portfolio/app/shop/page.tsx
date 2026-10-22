@@ -85,7 +85,7 @@ export default function ShopCatalog() {
             <ShoppingBag className="w-3.5 h-3.5" /> Ready-to-Ship Hardware & Enclosures
           </div>
           <h1 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
-            Controllers & Protective Cases
+            Devices & Protective Cases
           </h1>
           <p className="text-gray-300 text-sm md:text-base max-w-2xl leading-relaxed">
             Durable automation controllers, expansion boards, and custom 3D-printed plastic cases built to protect electronics and deliver reliable performance.
