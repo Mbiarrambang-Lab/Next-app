@@ -2,7 +2,7 @@
 
 import React, { useActionState, startTransition } from 'react';
 import Image from 'next/image';
-import { Cpu, Globe, Terminal, ArrowUpRight, AlertTriangle, CheckCircle2, Loader2, BookAIcon, RocketIcon, ShoppingBasket } from 'lucide-react';
+import { Cpu, ShieldCheck, Mail, ArrowUpRight, AlertTriangle, CheckCircle2, Loader2, BookOpen, ShoppingBag, Send } from 'lucide-react';
 import { transmitPacket } from './actions';
 
 export default function Home() {
@@ -18,235 +18,181 @@ export default function Home() {
 
   return (
     <main 
-      className="min-h-screen text-[#f0f6fc] selection:bg-amber-600 selection:text-white relative"
+      className="min-h-screen text-[#f0f6fc] selection:bg-amber-600 selection:text-white relative font-sans"
       style={{
         backgroundColor: '#0d1117',
-        backgroundImage: 'linear-gradient(to right, #30363d 1px, transparent 1px), linear-gradient(to bottom, #30363d 1px, transparent 1px)',
+        backgroundImage: 'linear-gradient(to right, #21262d 1px, transparent 1px), linear-gradient(to bottom, #21262d 1px, transparent 1px)',
         backgroundSize: '40px 40px'
       }}
     >
 
-      {/* Structural Header Navigation */}
-      <header className="border-b border-gray-800/60 backdrop-blur-md sticky top-0 z-50 px-6 py-3 bg-[#0d1117]/90">
+      {/* Navigation Bar */}
+      <header className="border-b border-gray-800/80 backdrop-blur-md sticky top-0 z-50 px-6 py-4 bg-[#0d1117]/90">
         <div className="max-w-6xl mx-auto flex justify-between items-center gap-4">
-          <div className="flex items-center gap-3 font-mono tracking-wider flex-shrink-0">
-            <div className="relative w-9 h-9 flex-shrink-0 bg-[#161b22] border border-gray-800 rounded-full overflow-hidden p-1 shadow-inner">
+          <div className="flex items-center gap-3">
+            <div className="relative w-10 h-10 flex-shrink-0 bg-[#161b22] border border-gray-800 rounded-full overflow-hidden p-1 shadow-md">
               <Image src="/logo.png" alt="Chadash Automation Logo" fill className="object-contain scale-105" priority />
             </div>
             <div className="flex flex-col text-left">
-              <span className="text-white font-extrabold text-sm tracking-tight leading-none">CHADASH</span>
-              <span className="text-amber-500 font-bold text-[9px] tracking-widest mt-0.5 leading-none">AUTOMATION</span>
+              <span className="text-white font-bold text-base tracking-tight leading-none">CHADASH</span>
+              <span className="text-amber-500 font-semibold text-[10px] tracking-wider mt-1 leading-none">AUTOMATION</span>
             </div>
           </div>
 
-          <nav className="hidden lg:flex items-center gap-x-8 text-xs font-mono font-medium text-gray-400">
-            <a href="#mission" className="hover:text-amber-500 transition-colors tracking-tight">MISSION</a>
-            <a href="#stack" className="hover:text-amber-500 transition-colors tracking-tight">STACK</a>
-            <a href="#systems" className="hover:text-amber-500 transition-colors tracking-tight">SYSTEMS</a>
-            <a href="/docs" className="hover:text-amber-500 transition-colors tracking-tight">CURRICULUM</a>
-            <a href="#contact" className="hover:text-amber-500 transition-colors tracking-tight">TERMINAL</a>
-            <a href="/shop" className="hover:text-amber-500 transition-colors tracking-tight flex items-center gap-1.5 text-amber-400">
-              SHOP <ShoppingBasket className="w-3.5 h-3.5" />
+          <nav className="hidden lg:flex items-center gap-x-8 text-sm font-medium text-gray-300">
+            <a href="#about" className="hover:text-amber-400 transition-colors">About</a>
+            <a href="#products" className="hover:text-amber-400 transition-colors">Products</a>
+            <a href="/shop" className="hover:text-amber-400 transition-colors flex items-center gap-1.5 text-amber-400">
+              <ShoppingBag className="w-4 h-4" /> 3D Shop
             </a>
+            <a href="/docs" className="hover:text-amber-400 transition-colors">Guides & Docs</a>
+            <a href="#contact" className="hover:text-amber-400 transition-colors">Contact</a>
           </nav>
 
-          <a href="#contact" className="text-xs bg-emerald-950 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded font-mono uppercase tracking-tight flex-shrink-0">
-            ● System Online
+          <a href="#contact" className="text-xs bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 px-3.5 py-2 rounded-lg font-medium flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Ready to Order
           </a>
         </div>
       </header>
 
-      <div className="max-w-5xl mx-auto px-6 pt-16 md:pt-24 pb-20 relative z-10">
+      <div className="max-w-5xl mx-auto px-6 pt-16 md:pt-24 pb-20 relative z-10 space-y-24">
 
-        {/* Core Hero Section */}
-        <section id="mission" className="space-y-6 max-w-4xl">
-          <div className="inline-flex items-center gap-2 bg-amber-950/40 text-amber-500 border border-amber-500/20 px-3 py-1 text-xs font-mono rounded-full">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-            Mbiarrambang Mbi Junior // Founder @ Chadash
+        {/* Hero Section */}
+        <section id="about" className="space-y-6 max-w-3xl">
+          <div className="inline-flex items-center gap-2 bg-amber-950/40 text-amber-400 border border-amber-500/20 px-3.5 py-1.5 text-xs rounded-full font-medium">
+            Engineered in Buea, Cameroon 🇨🇲
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight text-white">
-            Building systems for <span className="text-amber-500 underline decoration-amber-600/40 decoration-wavy">Africa</span> and DIYers all over the world.
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.1] text-white">
+            Smart automation controllers and custom hardware built for <span className="text-amber-500">reliable performance</span>.
           </h1>
 
-          <p className="text-gray-400 text-base md:text-lg max-w-2xl leading-relaxed">
-            Experienced Embedded Systems & IoT Engineer developing resilient, decentralized technological infrastructure.
-            Designing local hardware solutions optimized for deployment, open-sourced for makers globally.
+          <p className="text-gray-300 text-base md:text-lg leading-relaxed">
+            We design and manufacture practical industrial automation tools, smart power controllers, and durable 3D-printed protective enclosures tailored for local businesses and makers worldwide.
           </p>
 
-          <div className="pt-4 flex flex-wrap gap-4 font-mono text-xs">
-            <a href="#systems" className="bg-amber-600 hover:bg-amber-700 text-white font-bold px-5 py-3 rounded transition-colors flex items-center gap-2 group">
-              Explore Active Deployments
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          <div className="pt-2 flex flex-wrap gap-4 text-sm">
+            <a href="/shop" className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors flex items-center gap-2 shadow-lg shadow-amber-900/20">
+              Browse Hardware Shop
+              <ArrowUpRight className="w-4 h-4" />
             </a>
 
-            <a href="/docs" className="border border-amber-600/40 hover:border-amber-500 bg-amber-950/20 text-amber-400 px-5 py-3 rounded transition-colors flex items-center gap-2">
-              Access Open-Source Curriculum <BookAIcon className="w-4 h-4" />
-            </a>
-
-            <a href="/shop" className="border border-emerald-600/40 hover:border-emerald-500 bg-emerald-950/20 text-emerald-400 px-5 py-3 rounded transition-colors flex items-center gap-2">
-              Visit 3D Enclosure Shop <ShoppingBasket className="w-4 h-4" />
+            <a href="/docs" className="border border-gray-700 hover:border-gray-500 bg-[#161b22]/80 text-gray-200 px-6 py-3 rounded-lg transition-colors flex items-center gap-2">
+              View Free Guides & Manuals <BookOpen className="w-4 h-4 text-amber-500" />
             </a>
           </div>
         </section>
 
-        {/* Structured Engineering Stack Section */}
-        <section id="stack" className="pt-24 space-y-8">
+        {/* What We Do / Features Section */}
+        <section id="products" className="space-y-8">
           <div className="border-t border-gray-800/80 pt-12">
-            <h2 className="text-xs font-mono tracking-widest text-gray-500 uppercase">02 // Core Architecture Stacks</h2>
+            <h2 className="text-xs font-semibold tracking-widest text-amber-500 uppercase">What We Build</h2>
+            <p className="text-2xl font-bold text-white mt-1">Reliable hardware solutions for everyday needs</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-[#161b22]/90 border border-gray-800/80 p-6 rounded-lg space-y-4 hover:border-amber-600/30 transition-colors shadow-xl">
-              <div className="w-10 h-10 rounded bg-amber-950/30 flex items-center justify-center text-amber-500 border border-amber-500/20">
-                <Cpu className="w-5 h-5" />
+            <div className="bg-[#161b22]/90 border border-gray-800/80 p-6 rounded-2xl space-y-4 shadow-xl hover:border-amber-500/40 transition-all">
+              <div className="w-12 h-12 rounded-xl bg-amber-950/40 flex items-center justify-center text-amber-400 border border-amber-500/20">
+                <Cpu className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">01 / Hardware & Firmware</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">Designing reliable computing cores ready for deployment conditions.</p>
-              <div className="flex flex-wrap gap-1.5 font-mono text-[10px]">
-                <span className="bg-[#21262d] px-2 py-0.5 rounded text-gray-300">Arduino C++</span>
-                <span className="bg-[#21262d] px-2 py-0.5 rounded text-gray-300">ARM Cortex</span>
-                <span className="bg-[#21262d] px-2 py-0.5 rounded text-gray-300">PCB Design</span>
-              </div>
+              <h3 className="text-lg font-bold text-white">Industrial PLCs</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">Compact, programmable controllers designed to handle power monitoring, equipment control, and automation smoothly.</p>
             </div>
 
-            <div className="bg-[#161b22]/90 border border-gray-800/80 p-6 rounded-lg space-y-4 hover:border-emerald-600/30 transition-colors shadow-xl">
-              <div className="w-10 h-10 rounded bg-emerald-950/30 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
-                <Terminal className="w-5 h-5" />
+            <div className="bg-[#161b22]/90 border border-gray-800/80 p-6 rounded-2xl space-y-4 shadow-xl hover:border-emerald-500/40 transition-all">
+              <div className="w-12 h-12 rounded-xl bg-emerald-950/40 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
+                <ShoppingBag className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">02 / Distributed Web App</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">Developing real-time dashboards to display telemetry cleanly.</p>
-              <div className="flex flex-wrap gap-1.5 font-mono text-[10px]">
-                <span className="bg-[#21262d] px-2 py-0.5 rounded text-gray-300">Next.js</span>
-                <span className="bg-[#21262d] px-2 py-0.5 rounded text-gray-300">React 19</span>
-                <span className="bg-[#21262d] px-2 py-0.5 rounded text-gray-300">TailwindCSS</span>
-              </div>
+              <h3 className="text-lg font-bold text-white">3D Protective Cases</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">Durable, weather-resistant plastic enclosures and wall mounts printed locally to protect electronics from dust and moisture.</p>
             </div>
 
-            <div className="bg-[#161b22]/90 border border-gray-800/80 p-6 rounded-lg space-y-4 hover:border-blue-600/30 transition-colors shadow-xl">
-              <div className="w-10 h-10 rounded bg-blue-950/30 flex items-center justify-center text-blue-400 border border-blue-500/20">
-                <Globe className="w-5 h-5" />
+            <div className="bg-[#161b22]/90 border border-gray-800/80 p-6 rounded-2xl space-y-4 shadow-xl hover:border-blue-500/40 transition-all">
+              <div className="w-12 h-12 rounded-xl bg-blue-950/40 flex items-center justify-center text-blue-400 border border-blue-500/20">
+                <ShieldCheck className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">03 / Communication Bus</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">Configuring cloud paths and local databases to secure operations.</p>
-              <div className="flex flex-wrap gap-1.5 font-mono text-[10px]">
-                <span className="bg-[#21262d] px-2 py-0.5 rounded text-gray-300">MQTT Protocol</span>
-                <span className="bg-[#21262d] px-2 py-0.5 rounded text-gray-300">Firebase</span>
-                <span className="bg-[#21262d] px-2 py-0.5 rounded text-gray-300">WebSockets</span>
-              </div>
+              <h3 className="text-lg font-bold text-white">Open Learning Guides</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">Step-by-step documentation and video walkthroughs to help students and hobbyists learn electronics and programming.</p>
             </div>
           </div>
         </section>
 
-        {/* Field-Tested Systems Section */}
-        <section id="systems" className="pt-24 space-y-8">
+        {/* Contact Form Section */}
+        <section id="contact" className="pt-12 space-y-8">
           <div className="border-t border-gray-800/80 pt-12">
-            <h2 className="text-xs font-mono tracking-widest text-gray-500 uppercase">03 // Active Deployments & Specs</h2>
+            <h2 className="text-xs font-semibold tracking-widest text-amber-500 uppercase">Get In Touch</h2>
+            <p className="text-2xl font-bold text-white mt-1">Send us an inquiry or order request</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-[#161b22]/90 border border-gray-800/80 rounded-xl p-6 space-y-6 relative overflow-hidden group hover:border-amber-500/20 transition-all shadow-xl">
-              <div className="absolute top-0 right-0 bg-amber-500/10 text-amber-500 border-b border-l border-gray-800 font-mono text-[10px] px-3 py-1 rounded-bl">
-                📍 FIELD-TESTED / CAMEROON
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white tracking-tight">Decentralized Smart-Grid Node</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">A resilient telemetry routing system built to balance micro-grid loading anomalies and power surges locally.</p>
-              </div>
-              <div className="bg-[#0d1117] border border-gray-800/80 rounded p-4 font-mono text-xs space-y-2">
-                <div className="text-[10px] text-gray-500 border-b border-gray-800 pb-1 uppercase tracking-wider">🛠️ System Bill of Materials (BOM)</div>
-                <div className="grid grid-cols-2 text-gray-300 gap-y-1">
-                  <div>• Core Controller:</div><div className="text-amber-500">ESP32-WROOM-32E</div>
-                  <div>• Telemetry Unit:</div><div className="text-gray-400">PZEM-004T V3.0</div>
-                  <div>• Local Data Bus:</div><div className="text-gray-400">RS485 / Modbus RTU</div>
-                  <div>• Edge Storage:</div><div className="text-gray-400">MicroSD SPI Shield</div>
-                </div>
-              </div>
-              <div className="flex gap-4 font-mono text-xs pt-2">
-                <span className="flex items-center gap-1.5 text-emerald-400 bg-emerald-950/30 border border-emerald-500/10 px-2 py-1 rounded">Active V2.4</span>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors ml-auto">
-                  Source Specs ↗
-                </a>
-              </div>
-            </div>
-
-            <div className="bg-[#161b22]/90 border border-gray-800/80 rounded-xl p-6 space-y-6 relative overflow-hidden group hover:border-blue-500/20 transition-all shadow-xl">
-              <div className="absolute top-0 right-0 bg-blue-500/10 text-blue-400 border-b border-l border-gray-800 font-mono text-[10px] px-3 py-1 rounded-bl">🌐 OPEN-SOURCE PIPELINE</div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white tracking-tight">NexarLink DIY Gateways</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">Real-time distributed network controller interface for tracking wireless mesh sensors over low-bandwidth channels.</p>
-              </div>
-              <div className="bg-[#0d1117] border border-gray-800/80 rounded p-4 font-mono text-xs space-y-2">
-                <div className="text-[10px] text-gray-500 border-b border-gray-800 pb-1 uppercase tracking-wider">🛠️ System Bill of Materials (BOM)</div>
-                <div className="grid grid-cols-2 text-gray-300 gap-y-1">
-                  <div>• Radio Module:</div><div className="text-blue-400">LoRa SX1278 (433MHz)</div>
-                  <div>• Local Processor:</div><div className="text-gray-400">ATMega328P Core</div>
-                  <div>• Power Bus:</div><div className="text-gray-400">MP2307 DC-DC Buck</div>
-                  <div>• Comms Interface:</div><div className="text-gray-400">MQTT over WebSockets</div>
-                </div>
-              </div>
-              <div className="flex gap-4 font-mono text-xs pt-2">
-                <span className="flex items-center gap-1.5 text-blue-400 bg-blue-950/30 border border-blue-500/10 px-2 py-1 rounded">DIY Stack V1.0</span>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors ml-auto">
-                  Clone Files ↗
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Secure Architecture Inquiries (Contact Terminal Form) */}
-        <section id="contact" className="pt-24 space-y-8">
-          <div className="border-t border-gray-800/80 pt-12">
-            <h2 className="text-xs font-mono tracking-widest text-gray-500 uppercase">04 // Secure Terminal Node</h2>
-          </div>
-
-          <div className="bg-[#161b22]/90 border border-gray-800/80 rounded-xl p-6 max-w-2xl mx-auto space-y-6 shadow-2xl">
+          <div className="bg-[#161b22]/95 border border-gray-800/80 rounded-2xl p-8 max-w-2xl mx-auto space-y-6 shadow-2xl">
             <div className="flex items-center justify-between border-b border-gray-800 pb-4">
-              <div className="flex items-center gap-2 font-mono text-xs text-gray-400">
-                <Terminal className="w-4 h-4 text-emerald-500" />
-                <span>CHADASH_SECURE_MAIL_BUS // INBOUND</span>
+              <div className="flex items-center gap-2.5 text-sm text-gray-300 font-medium">
+                <Mail className="w-4 h-4 text-amber-500" />
+                <span>Direct Message to Founder</span>
               </div>
-              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></div>
+              <span className="text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-1 rounded-full">
+                Replies within 24 hours
+              </span>
             </div>
 
-            <form className="space-y-4 text-sm font-mono" onSubmit={handleSubmit}>
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-gray-500 text-xs uppercase block">Identity Name</label>
+                  <label className="text-gray-400 text-xs font-medium block">Your Name</label>
                   <input
                     name="identity"
                     type="text"
                     required
-                    placeholder="Your Name or Call Sign"
-                    className="w-full bg-[#0d1117] border border-gray-800 rounded p-2.5 focus:outline-none focus:border-amber-500 text-gray-200 transition-colors"
+                    placeholder="e.g. John Smith"
+                    className="w-full bg-[#0d1117] border border-gray-800 rounded-lg p-3 text-sm focus:outline-none focus:border-amber-500 text-gray-200 transition-colors"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-gray-500 text-xs uppercase block">Return Communication Routing (Email)</label>
-                  <input name="routing" type="email" required placeholder="name@domain.com" className="w-full bg-[#0d1117] border border-gray-800 rounded p-2.5 focus:outline-none focus:border-amber-500 text-gray-200 transition-colors" />
+                  <label className="text-gray-400 text-xs font-medium block">Your Email Address</label>
+                  <input 
+                    name="routing" 
+                    type="email" 
+                    required 
+                    placeholder="name@example.com" 
+                    className="w-full bg-[#0d1117] border border-gray-800 rounded-lg p-3 text-sm focus:outline-none focus:border-amber-500 text-gray-200 transition-colors" 
+                  />
                 </div>
               </div>
               <div className="space-y-1.5">
-                <label className="text-gray-500 text-xs uppercase block">System Architecture Requirements / Message Payload</label>
-                <textarea name="payload" required rows={4} placeholder="Describe the system payload parameters or collaboration objectives..." className="w-full bg-[#0d1117] border border-gray-800 rounded p-2.5 focus:outline-none focus:border-amber-500 text-gray-200 transition-colors resize-none"></textarea>
+                <label className="text-gray-400 text-xs font-medium block">What would you like to build or order?</label>
+                <textarea 
+                  name="payload" 
+                  required 
+                  rows={4} 
+                  placeholder="Tell us about your project or the products you want to buy..." 
+                  className="w-full bg-[#0d1117] border border-gray-800 rounded-lg p-3 text-sm focus:outline-none focus:border-amber-500 text-gray-200 transition-colors resize-none"
+                ></textarea>
               </div>
 
-              <button type="submit" disabled={isPending} className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-amber-800/50 disabled:text-gray-500 text-white font-bold p-3 rounded font-mono text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed">
+              <button 
+                type="submit" 
+                disabled={isPending} 
+                className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-amber-800/50 text-white font-bold p-3.5 rounded-lg text-sm transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed shadow-lg shadow-amber-900/20"
+              >
                 {isPending ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin text-amber-500" />
-                    Modulating Packet Frequencies...
+                    <Loader2 className="w-4 h-4 animate-spin text-amber-200" />
+                    Sending Message...
                   </>
-                ) : "Transmit Packet"}
-                <RocketIcon className='w-4 h-4' />
+                ) : (
+                  <>
+                    Send Message <Send className="w-4 h-4" />
+                  </>
+                )}
               </button>
 
               {state && (
-                <div className={`mt-4 p-3 rounded border text-xs font-mono flex items-start gap-2.5 ${state.success
-                  ? 'bg-emerald-950/30 text-emerald-400 border-emerald-500/20'
-                  : 'bg-red-950/30 text-red-400 border-red-500/20'
-                  }`}>
+                <div className={`mt-4 p-3.5 rounded-xl border text-xs flex items-start gap-2.5 ${
+                  state.success
+                    ? 'bg-emerald-950/40 text-emerald-300 border-emerald-500/30'
+                    : 'bg-red-950/40 text-red-300 border-red-500/30'
+                }`}>
                   {state.success ? <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" /> : <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" />}
                   <span>{state.message}</span>
                 </div>
@@ -256,14 +202,14 @@ export default function Home() {
         </section>
       </div>
 
-      {/* Global Engineering Footer */}
-      <footer className="border-t border-gray-800/60 py-8 px-6 text-center text-xs font-mono text-gray-500 relative z-10 bg-[#0d1117]/95 backdrop-blur">
+      {/* Footer */}
+      <footer className="border-t border-gray-800/80 py-8 px-6 text-center text-xs text-gray-400 bg-[#0d1117]/95">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <div>© 2026 CHADASH AUTOMATION. ALL REFS RESERVED.</div>
-          <div className="flex gap-4 text-gray-400">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-amber-500 transition-colors">GITHUB</a>
-            <span className="text-gray-700">//</span>
-            <a href="/shop" className="hover:text-amber-500 transition-colors">3D SHOP</a>
+          <div>© 2026 Chadash Automation. All rights reserved.</div>
+          <div className="flex gap-6">
+            <a href="/shop" className="hover:text-amber-400 transition-colors">3D Shop</a>
+            <a href="/docs" className="hover:text-amber-400 transition-colors">Documentation</a>
+            <a href="#contact" className="hover:text-amber-400 transition-colors">Contact</a>
           </div>
         </div>
       </footer>
