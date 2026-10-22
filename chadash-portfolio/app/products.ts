@@ -20,7 +20,7 @@ export const shopInventory: ShopItem[] = [
     name: 'Chadash PLC-X1 V1.1',
     image: plcImage,
     tagline: 'Rugged smart controller for power and equipment automation.',
-    price: '15,000 XAF',
+    price: '30,000 XAF',
     compatibility: 'ESP32 Smart Core, Relays',
     features: ['Snap-fit case', 'Cable ports', 'Thermal grilles'],
     status: 'In Stock'
@@ -30,7 +30,7 @@ export const shopInventory: ShopItem[] = [
     name: 'I/O Expansion Cards',
     image: expansionImage,
     tagline: 'Plug-and-play circuit boards to expand sensors and switches.',
-    price: '21,000 XAF',
+    price: '10,000 XAF',
     compatibility: 'PLC-X1 V1.1, Arduino',
     features: ['Bus alignment', 'Screw terminals', 'Surge protection'],
     status: 'In Stock'
