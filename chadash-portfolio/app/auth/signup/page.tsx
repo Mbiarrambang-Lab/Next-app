@@ -108,7 +108,7 @@ export default function SignUpPage() {
       </div>
 
       <footer className="text-center text-[10px] text-gray-500 py-4">
-        Chadash Automation Secure Portal © {new Date().getFullYear()}
+        Chadash Automation Secure Portal © 2026
       </footer>
     </main>
   );

@@ -3,322 +3,303 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
-  Search, BookOpen, Layers, Terminal, Cpu, FileText, 
-  ExternalLink, ChevronRight, ChevronDown, CheckCircle, ArrowLeft 
+  Search, Plus, Filter, MoreHorizontal, FileText, LayoutDashboard, 
+  Settings, HelpCircle, LifeBuoy, Users, Layers, ChevronDown, 
+  ChevronLeft, ChevronRight, Eye, ArrowLeft
 } from 'lucide-react';
 
-interface SubSection {
+interface DocItem {
   id: string;
   title: string;
+  createdDate: string;
+  lastActivity: string;
+  recipients: string[];
+  status: 'Draft' | 'Completed' | 'Sent' | 'Expired';
 }
 
-interface NavGroup {
-  groupTitle: string;
-  items: {
-    title: string;
-    id: string;
-    subsections?: SubSection[];
-  }[];
-}
-
-const docsNavigation: NavGroup[] = [
+const documentList: DocItem[] = [
   {
-    groupTitle: 'Getting Started',
-    items: [
-      { 
-        title: 'Introduction', 
-        id: 'intro',
-        subsections: [
-          { id: 'overview', title: 'System Overview' },
-          { id: 'architecture', title: 'Hardware Architecture' },
-          { id: 'quickstart', title: 'Quick Start Guide' }
-        ]
-      },
-      { 
-        title: 'PLC-X1 Setup', 
-        id: 'plc-setup',
-        subsections: [
-          { id: 'wiring', title: 'Wiring & Power Input' },
-          { id: 'firmware', title: 'Firmware Flashing' }
-        ]
-      }
-    ]
+    id: 'doc_0',
+    title: 'Beginners Guide to Automation',
+    createdDate: 'Jan 17, 2026, 9:18 AM',
+    lastActivity: 'Jan 25, 2026, 9:18 AM',
+    recipients: ['MJ', 'CA', 'UB'],
+    status: 'Sent'
   },
   {
-    groupTitle: 'Core Modules',
-    items: [
-      { 
-        title: 'I/O Expansion Cards', 
-        id: 'expansion-cards',
-        subsections: [
-          { id: 'bus-protocol', title: 'Bus Protocol Specs' },
-          { id: 'relays', title: 'Relay & Sensor Triggering' }
-        ]
-      },
-      { 
-        title: 'PicoW Prototyping Shell', 
-        id: 'picow-shell',
-        subsections: [
-          { id: 'pinout', title: 'GPIO Pinout Map' },
-          { id: 'enclosure', title: 'Snap-Fit Enclosure Assembly' }
-        ]
-      }
-    ]
+    id: 'doc_1',
+    title: 'Chadash PLC-X1 V1.1 Technical Specification',
+    createdDate: 'Jan 16, 2026, 9:18 AM',
+    lastActivity: 'Jan 24, 2026, 9:18 AM',
+    recipients: ['MJ', 'CA'],
+    status: 'Draft'
   },
   {
-    groupTitle: 'Industrial Systems',
-    items: [
-      { 
-        title: 'Cassava Processing Station', 
-        id: 'cassava-station',
-        subsections: [
-          { id: 'motor-control', title: 'Motor & Speed Controllers' },
-          { id: 'safety', title: 'Safety Cut-Off Relays' }
-        ]
-      }
-    ]
+    id: 'doc_2',
+    title: 'I/O Expansion Board Pinout Guide',
+    createdDate: 'Jan 15, 2026, 9:18 AM',
+    lastActivity: 'Jan 23, 2026, 9:18 AM',
+    recipients: ['MJ'],
+    status: 'Completed'
+  },
+  {
+    id: 'doc_3',
+    title: 'PicoW Prototyping Shell Assembly Guide',
+    createdDate: 'Jan 14, 2026, 9:18 AM',
+    lastActivity: 'Jan 23, 2026, 9:18 AM',
+    recipients: ['CA'],
+    status: 'Completed'
+  },
+  {
+    id: 'doc_4',
+    title: 'Full Cassava Processing Station Integration Manual',
+    createdDate: 'Jan 13, 2026, 9:20 AM',
+    lastActivity: 'Jan 22, 2026, 9:18 AM',
+    recipients: ['MJ', 'UB'],
+    status: 'Sent'
+  },
+  {
+    id: 'doc_5',
+    title: 'Hardware Procurement & Safety Policy',
+    createdDate: 'Jan 12, 2026, 10:24 AM',
+    lastActivity: 'Jan 21, 2026, 10:24 AM',
+    recipients: ['CA'],
+    status: 'Draft'
+  },
+  {
+    id: 'doc_6',
+    title: 'Firmware Flashing Protocol v1.1',
+    createdDate: 'Jan 10, 2026, 11:18 AM',
+    lastActivity: 'Jan 21, 2026, 10:22 AM',
+    recipients: ['MJ', 'CA'],
+    status: 'Completed'
+  },
+  {
+    id: 'doc_7',
+    title: 'Optocoupler & Relay Circuit Schematics',
+    createdDate: 'Jan 10, 2026, 11:18 AM',
+    lastActivity: 'Jan 21, 2026, 10:20 AM',
+    recipients: ['UB'],
+    status: 'Expired'
   }
 ];
 
 export default function DocsHubPage() {
-  const [activeTab, setActiveTab] = useState('intro');
-  const [activeSub, setActiveSub] = useState('overview');
-  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
-    intro: true,
-    'plc-setup': false,
-    'expansion-cards': false,
-    'picow-shell': false
-  });
+  const [activeTab, setActiveTab] = useState('All Documents');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const toggleGroup = (id: string) => {
-    setExpandedGroups(prev => ({ ...prev, [id]: !prev[id] }));
+  const statusStyles = {
+    Draft: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+    Completed: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+    Sent: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+    Expired: 'bg-rose-500/10 text-rose-400 border-rose-500/20'
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col">
+    <div className="min-h-screen bg-[#0d1117] text-gray-200 font-sans flex text-xs">
       
-      {/* Top Navigation Bar */}
-      <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-6 py-3">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link 
-              href="/" 
-              className="text-xs text-slate-400 hover:text-amber-400 border border-slate-800 bg-slate-900 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-2"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
-            </Link>
-            <div className="text-sm font-bold text-white flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-              Chadash Docs <span className="text-xs text-amber-500 font-mono">v1.1</span>
+      {/* Left Sidebar */}
+      <aside className="w-56 bg-[#161b22] border-r border-gray-800 p-4 flex flex-col justify-between flex-shrink-0">
+        <div className="space-y-6">
+          
+          {/* Logo Brand Header */}
+          <div className="flex items-center justify-between px-2 pt-1">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-lg bg-amber-500 flex items-center justify-center font-bold text-black text-xs">
+                C
+              </div>
+              <span className="font-extrabold text-white text-sm tracking-tight">Chadash Docs</span>
             </div>
+            <Link href="/" className="text-gray-400 hover:text-amber-400">
+              <ArrowLeft className="w-4 h-4" />
+            </Link>
           </div>
 
-          <div className="flex items-center gap-4">
-            <Link href="/shop" className="text-xs text-slate-400 hover:text-white transition-colors">Hardware Shop</Link>
-            <Link href="/checkout" className="text-xs text-amber-400 border border-amber-500/30 bg-amber-950/20 px-3 py-1.5 rounded-lg hover:bg-amber-900/30 transition-colors">Checkout</Link>
+          {/* Action Button */}
+          <button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-extrabold py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 transition-colors uppercase tracking-wide">
+            <Plus className="w-4 h-4" /> Create New
+          </button>
+
+          {/* Search & Main Nav */}
+          <div className="space-y-4">
+            <div className="relative px-2">
+              <Search className="w-3.5 h-3.5 text-gray-500 absolute left-4 top-2.5" />
+              <input 
+                type="text" 
+                placeholder="Search..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full bg-[#0d1117] border border-gray-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <span className="text-[10px] font-bold text-gray-500 uppercase px-2 tracking-wider">Main Menu</span>
+              <nav className="space-y-0.5">
+                <Link href="#" className="flex items-center gap-2.5 px-2.5 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800/50">
+                  <LayoutDashboard className="w-4 h-4 text-gray-400" /> Dashboard
+                </Link>
+                <Link href="#" className="flex items-center gap-2.5 px-2.5 py-2 text-amber-400 bg-amber-950/30 font-semibold rounded-lg border border-amber-500/20">
+                  <FileText className="w-4 h-4 text-amber-500" /> My Documents
+                </Link>
+                <Link href="#" className="flex items-center gap-2.5 px-2.5 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800/50">
+                  <Layers className="w-4 h-4 text-gray-400" /> Templates
+                </Link>
+                <Link href="#" className="flex items-center gap-2.5 px-2.5 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800/50">
+                  <Users className="w-4 h-4 text-gray-400" /> Team Workspace
+                </Link>
+              </nav>
+            </div>
           </div>
         </div>
-      </header>
 
-      {/* Main Container - 3 Column Layout */}
-      <div className="max-w-7xl w-full mx-auto px-6 flex-1 flex">
+        {/* Bottom Sidebar Settings */}
+        <div className="space-y-2 border-t border-gray-800 pt-4">
+          <Link href="#" className="flex items-center gap-2.5 px-2.5 py-2 text-gray-400 hover:text-white rounded-lg">
+            <HelpCircle className="w-4 h-4" /> Help & Manuals
+          </Link>
+          <Link href="#" className="flex items-center gap-2.5 px-2.5 py-2 text-gray-400 hover:text-white rounded-lg">
+            <Settings className="w-4 h-4" /> Settings
+          </Link>
+        </div>
+      </aside>
+
+      {/* Main Content View */}
+      <main className="flex-1 flex flex-col bg-[#0d1117] overflow-x-auto">
         
-        {/* LEFT SIDEBAR: Main Navigation & Subsections */}
-        <aside className="w-64 flex-shrink-0 border-r border-slate-800 py-8 pr-6 space-y-6 hidden md:block sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto">
-          
-          {/* Quick Search Input */}
-          <div className="relative">
-            <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
-            <input 
-              type="text" 
-              placeholder="Quick Search (Ctrl+K)..." 
-              className="w-full bg-slate-900 border border-slate-800 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors"
-            />
+        {/* Top Header Controls */}
+        <header className="border-b border-gray-800 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <h1 className="text-xl font-extrabold text-white">My Documents</h1>
+          <div className="flex items-center gap-3">
+            <Link href="/shop" className="bg-[#161b22] border border-gray-800 hover:border-amber-500 text-gray-300 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors">
+              Hardware Shop
+            </Link>
+            <Link href="/checkout" className="bg-amber-500 hover:bg-amber-600 text-black font-extrabold px-4 py-2 rounded-xl text-xs uppercase tracking-wide transition-colors">
+              Checkout Basket
+            </Link>
           </div>
+        </header>
 
-          {/* Navigation Links Grouped */}
-          <nav className="space-y-6">
-            {docsNavigation.map((group, idx) => (
-              <div key={idx} className="space-y-2">
-                <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-2">
-                  {group.groupTitle}
-                </h4>
-
-                <div className="space-y-1">
-                  {group.items.map((item) => {
-                    const isActive = activeTab === item.id;
-                    const isExpanded = expandedGroups[item.id];
-
-                    return (
-                      <div key={item.id} className="space-y-1">
-                        <button
-                          onClick={() => {
-                            setActiveTab(item.id);
-                            toggleGroup(item.id);
-                          }}
-                          className={`w-full flex items-center justify-between text-xs px-2.5 py-1.5 rounded-md transition-colors ${
-                            isActive 
-                              ? 'bg-amber-500/10 text-amber-400 font-semibold' 
-                              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
-                          }`}
-                        >
-                          <span className="flex items-center gap-2">
-                            <BookOpen className="w-3.5 h-3.5" />
-                            {item.title}
-                          </span>
-                          {item.subsections && (
-                            isExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />
-                          )}
-                        </button>
-
-                        {/* Nested Subsections */}
-                        {item.subsections && (isExpanded || isActive) && (
-                          <div className="ml-4 pl-3 border-l border-slate-800 space-y-1 my-1">
-                            {item.subsections.map((sub) => {
-                              const isSubActive = activeSub === sub.id;
-                              return (
-                                <button
-                                  key={sub.id}
-                                  onClick={() => setActiveSub(sub.id)}
-                                  className={`block w-full text-left text-[11px] py-1 transition-colors ${
-                                    isSubActive 
-                                      ? 'text-amber-400 font-medium' 
-                                      : 'text-slate-500 hover:text-slate-300'
-                                  }`}
-                                >
-                                  {sub.title}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+        <div className="p-6 space-y-6 flex-1">
+          
+          {/* Navigation Filter Tabs */}
+          <div className="flex items-center gap-2 border-b border-gray-800 pb-3 overflow-x-auto text-xs">
+            {['All Documents', 'Draft', 'For Approval', 'Sent', 'Completed'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap font-medium ${
+                  activeTab === tab
+                    ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
+                    : 'text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                {tab}
+              </button>
             ))}
-          </nav>
-        </aside>
-
-        {/* CENTER COLUMN: Main Article Documentation View */}
-        <main className="flex-1 min-w-0 py-8 px-6 lg:px-12 space-y-8">
-          
-          {/* Breadcrumb Header */}
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-xs text-slate-500">
-              <span>Documentation</span>
-              <ChevronRight className="w-3 h-3" />
-              <span>Getting Started</span>
-              <ChevronRight className="w-3 h-3" />
-              <span className="text-amber-400 font-medium">PLC-X1 V1.1 System</span>
-            </div>
-
-            <h1 className="text-3xl font-extrabold text-white tracking-tight">
-              Chadash PLC-X1 Hardware Reference
-            </h1>
-            <p className="text-slate-400 text-sm leading-relaxed max-w-2xl">
-              Comprehensive hardware documentation, pinout maps, relay terminal configuration, and safe operating guidelines for the Chadash PLC-X1 controller.
-            </p>
           </div>
 
-          {/* Specs Table Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold text-white tracking-tight">Hardware Bus Specs</h3>
-            
-            <div className="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/50">
-              <table className="w-full text-left text-xs text-slate-300">
-                <thead className="bg-slate-900 border-b border-slate-800 text-slate-400 font-semibold uppercase text-[10px]">
-                  <tr>
-                    <th className="px-4 py-3">Parameter</th>
-                    <th className="px-4 py-3">Specification</th>
-                    <th className="px-4 py-3">Notes</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800/60">
-                  <tr>
-                    <td className="px-4 py-2.5 font-mono text-amber-400">Power Input</td>
-                    <td className="px-4 py-2.5">12V–24V DC</td>
-                    <td className="px-4 py-2.5 text-slate-500">Optocoupler surge protection built-in</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2.5 font-mono text-amber-400">Core Controller</td>
-                    <td className="px-4 py-2.5">ESP32-WROOM-32U</td>
-                    <td className="px-4 py-2.5 text-slate-500">Wi-Fi & Bluetooth LE dual radio antenna clearance</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2.5 font-mono text-amber-400">Relay Channels</td>
-                    <td className="px-4 py-2.5">4-Channel High Voltage</td>
-                    <td className="px-4 py-2.5 text-slate-500">Rated up to 250V AC / 10A per channel</td>
-                  </tr>
-                </tbody>
-              </table>
+          {/* Filter Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-4 bg-[#161b22]/90 border border-gray-800 rounded-xl p-3">
+            <div className="flex items-center gap-3 text-xs text-gray-400">
+              <span className="font-semibold text-gray-300">Sort By:</span>
+              <button className="bg-[#0d1117] border border-gray-800 px-3 py-1 rounded-lg text-white flex items-center gap-1.5">
+                Last Updated Des <ChevronDown className="w-3 h-3" />
+              </button>
+              <button className="bg-[#0d1117] border border-gray-800 px-3 py-1 rounded-lg text-white flex items-center gap-1.5">
+                Name <ChevronDown className="w-3 h-3" />
+              </button>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button className="bg-[#0d1117] border border-gray-800 px-3 py-1 rounded-lg text-gray-300 flex items-center gap-1.5 text-xs">
+                <Filter className="w-3 h-3 text-amber-500" /> More Filters
+              </button>
             </div>
           </div>
 
-          {/* Technical Guide Content */}
-          <div className="space-y-4 pt-4 border-t border-slate-800">
-            <h3 className="text-lg font-bold text-white tracking-tight">System Wiring & Quick Installation</h3>
-            <p className="text-slate-400 text-xs leading-relaxed">
-              Connect supply power to the primary terminal block on the lower edge. Ensure grounding cables are tightly secured to prevent electromagnetic interference during relay switching.
-            </p>
+          {/* Document Table */}
+          <div className="bg-[#161b22]/95 border border-gray-800 rounded-2xl overflow-hidden shadow-xl">
+            <table className="w-full text-left text-xs text-gray-300">
+              <thead className="bg-[#0d1117] border-b border-gray-800 text-gray-400 font-semibold uppercase text-[10px]">
+                <tr>
+                  <th className="p-4 w-10">
+                    <input type="checkbox" className="rounded border-gray-800 bg-[#0d1117]" />
+                  </th>
+                  <th className="py-4 px-2">Document Name</th>
+                  <th className="py-4 px-4">Last Activity</th>
+                  <th className="py-4 px-4">Recipients</th>
+                  <th className="py-4 px-4">Status</th>
+                  <th className="py-4 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-800/80">
+                {documentList.map((doc) => (
+                  <tr key={doc.id} className="hover:bg-gray-800/30 transition-colors">
+                    <td className="p-4">
+                      <input type="checkbox" className="rounded border-gray-800 bg-[#0d1117]" />
+                    </td>
+                    <td className="py-4 px-2">
+                      <div className="flex items-start gap-3">
+                        <FileText className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <span className="font-bold text-white block">{doc.title}</span>
+                          <span className="text-[10px] text-gray-500">Created: {doc.createdDate}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4 text-gray-400 text-[11px] whitespace-nowrap">
+                      {doc.lastActivity}
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="flex items-center -space-x-1.5">
+                        {doc.recipients.map((rec, i) => (
+                          <div 
+                            key={i} 
+                            className="w-6 h-6 rounded-full bg-gray-800 border border-gray-700 text-[9px] font-bold text-amber-400 flex items-center justify-center uppercase shadow"
+                          >
+                            {rec}
+                          </div>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <span className={`px-2.5 py-1 rounded-full border text-[10px] font-semibold inline-block ${statusStyles[doc.status]}`}>
+                        {doc.status}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button className="text-xs bg-[#0d1117] border border-gray-800 hover:border-amber-500/50 text-gray-300 px-3 py-1 rounded-lg flex items-center gap-1 transition-colors">
+                          <Eye className="w-3 h-3 text-amber-500" /> View
+                        </button>
+                        <button className="text-gray-500 hover:text-gray-300 p-1">
+                          <MoreHorizontal className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-            {/* Code / Command Block */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 font-mono text-xs text-slate-200 space-y-2">
-              <div className="flex justify-between items-center border-b border-slate-800 pb-2 text-[10px] text-slate-500">
-                <span>Terminal / Firmware Flash Command</span>
-                <span>Bash</span>
-              </div>
-              <p className="text-emerald-400"># Flash default firmware to Chadash PLC-X1 core</p>
-              <p className="text-amber-300">esptool.py --chip esp32 --port /dev/ttyUSB0 write_flash -z 0x1000 firmware_v1.1.bin</p>
+          {/* Table Pagination */}
+          <div className="flex items-center justify-between text-xs text-gray-400 pt-2">
+            <span>Showing 7 Documents</span>
+            <div className="flex items-center gap-2">
+              <button className="p-1 border border-gray-800 rounded-lg hover:border-amber-500 text-gray-300">
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <span className="px-2 font-semibold text-white">Page 1 of 1</span>
+              <button className="p-1 border border-gray-800 rounded-lg hover:border-amber-500 text-gray-300">
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
 
-        </main>
-
-        {/* RIGHT SIDEBAR: On This Page Table of Contents */}
-        <aside className="w-56 flex-shrink-0 py-8 pl-6 border-l border-slate-800 hidden lg:block sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto">
-          <div className="space-y-4">
-            <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-              On This Page
-            </h4>
-
-            <ul className="space-y-2 text-xs text-slate-400">
-              <li>
-                <a href="#overview" className="hover:text-amber-400 transition-colors block">System Overview</a>
-              </li>
-              <li>
-                <a href="#architecture" className="hover:text-amber-400 transition-colors block">Hardware Bus Specs</a>
-              </li>
-              <li>
-                <a href="#wiring" className="hover:text-amber-400 transition-colors block">System Wiring & Installation</a>
-              </li>
-              <li>
-                <a href="#firmware" className="hover:text-amber-400 transition-colors block">Firmware Flashing</a>
-              </li>
-            </ul>
-
-            <div className="pt-6 border-t border-slate-800 space-y-3">
-              <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-                External Links
-              </h4>
-              <ul className="space-y-2 text-xs text-slate-400">
-                <li>
-                  <a href="https://github.com/Mbiarrambang-Lab/Next-app" target="_blank" rel="noreferrer" className="hover:text-amber-400 flex items-center gap-1.5 transition-colors">
-                    GitHub Repository <ExternalLink className="w-3 h-3" />
-                  </a>
-                </li>
-                <li>
-                  <Link href="/shop" className="hover:text-amber-400 flex items-center gap-1.5 transition-colors">
-                    Order PLC Hardware <ExternalLink className="w-3 h-3" />
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </aside>
-
-      </div>
+        </div>
+      </main>
     </div>
   );
 }
