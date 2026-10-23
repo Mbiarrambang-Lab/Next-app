@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, ShoppingBag, Box, CheckCircle, ShoppingCart } from 'lucide-react';
-import { shopInventory, ShopItem } from '@/app/products';
+import { shopInventory, ShopItem } from '@/app/utils/products';
 import { useCart } from '@/app/context/CartContext';
 
 export default function ShopCatalog() {

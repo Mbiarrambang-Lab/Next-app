@@ -3,7 +3,7 @@
 import React, { useActionState, startTransition } from 'react';
 import Image from 'next/image';
 import { Cpu, ShieldCheck, Mail, ArrowUpRight, AlertTriangle, CheckCircle2, Loader2, BookOpen, ShoppingBag, Send, FlagIcon } from 'lucide-react';
-import { transmitPacket } from './actions';
+import { transmitPacket } from './utils/actions';
 
 export default function Home() {
   const [state, formAction, isPending] = useActionState(transmitPacket, null);
