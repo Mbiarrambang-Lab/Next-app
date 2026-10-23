@@ -166,26 +166,6 @@ export const curriculumDocs: DocItem[] = [
       {
         title: '1. The PLC Scan Cycle',
         content: 'Explaining how a PLC deterministically reads inputs, executes logic scan tables, and updates outputs.'
-      },
-      {
-        title: '2. Structured Text (ST) Timer Interlock Example',
-        content: 'Sample IEC 61131-3 Structured Text implementation for automated motor control.',
-        codeSnippet: `// IEC 61131-3 Structured Text (ST) Example
-PROGRAM MotorInterlock
-VAR
-  StartButton AT %IX0.0 : BOOL;
-  StopButton AT %IX0.1 : BOOL;
-  MotorOutput AT %QX0.0 : BOOL;
-  RunTimer : TON;
-END_VAR
-
-RunTimer(IN := StartButton AND NOT StopButton, PT := T#5s);
-IF StartButton AND NOT StopButton THEN
-  MotorOutput := TRUE;
-ELSIF StopButton OR NOT RunTimer.Q THEN
-  MotorOutput := FALSE;
-END_IF;
-END_PROGRAM`
       }
     ]
   },
@@ -215,7 +195,53 @@ END_PROGRAM`
     ]
   },
 
-  // ================= ADVANCED LEVEL =================
+  // ================= ADVANCED LEVEL (STATION GUIDES) =================
+  {
+    slug: 'station-cassava-processing',
+    title: 'Full Cassava Processing Station Integration',
+    category: 'Station',
+    readTime: '25 min read',
+    lastUpdated: 'Jan 22, 2026',
+    level: 'Advanced',
+    status: 'Published',
+    overview: 'Automated slicing, grating, and drying control panels designed for agricultural cooperatives and STEM universities in Cameroon.',
+    protocolFocus: 'UART Telemetry, Temperature Feedback, and Emergency Cut-Off Relays.',
+    hardwareBOM: ['Chadash PLC-X1 V1.1', 'DS18B20 Waterproof Sensor', 'High-Torque DC Motor Relays'],
+    youtubeEmbedId: 'dQw4w9WgXcQ',
+    subsections: [
+      { id: 'sub-1', title: 'Grating Motor Interlocks', summary: 'Safety cut-off mechanisms triggered during mechanical enclosure openings.' },
+      { id: 'sub-2', title: 'Dehydration Chamber PID Control', summary: 'Maintaining precise drying temperatures for flour production.' }
+    ],
+    sections: [
+      {
+        title: '1. System Architecture & Safety Interlocks',
+        content: 'The Cassava Processing Station requires failsafe mechanical cut-offs linked directly to hardware interrupt pins.'
+      }
+    ]
+  },
+  {
+    slug: 'station-cocoa-fermentation',
+    title: 'Cocoa Fermentation & Drying Station Automation',
+    category: 'Station',
+    readTime: '20 min read',
+    lastUpdated: 'Jan 21, 2026',
+    level: 'Advanced',
+    status: 'Published',
+    overview: 'Automated fermentation batch timing and moisture monitoring systems tailored for local cocoa farmers and processing centers.',
+    protocolFocus: 'Real-Time Clock (RTC) scheduling and humidity sensing.',
+    hardwareBOM: ['ESP32 Node', 'DHT22 Humidity Sensor', 'DS1307 RTC Module', 'Relay Actuators'],
+    youtubeEmbedId: 'dQw4w9WgXcQ',
+    subsections: [
+      { id: 'sub-1', title: '5-Day Fermentation Scheduling', summary: 'Using RTC modules to track automated bean turning intervals.' },
+      { id: 'sub-2', title: 'Moisture Curve Logging', summary: 'Monitoring ambient humidity to prevent mold formation during sun-drying phases.' }
+    ],
+    sections: [
+      {
+        title: '1. Fermentation Batch Tracking',
+        content: 'Tracking exact temperature curves across 5-day bean fermentation cycles to ensure export-grade quality.'
+      }
+    ]
+  },
   {
     slug: 'hardware-documentation-chadash-devices',
     title: 'Hardware Documentation for our devices (IEC 61131-2)',
@@ -236,13 +262,6 @@ END_PROGRAM`
       {
         title: '1. Power Management & Fusing',
         content: 'Stepping down 24V industrial field power using LM2596 buck converters while protecting against power grid instability with onboard input fuses.'
-      },
-      {
-        title: '2. Inductive Load Protection',
-        content: 'Using 1N4007 flyback diodes across relay coils and MOSFET drains to suppress back-EMF spikes during switching.',
-        codeSnippet: `// Inductive Load Suppression Setup
-// Ensure 1N4007 cathode is connected to 24V rail 
-// and anode is connected to MOSFET drain terminal.`
       }
     ]
   },
@@ -254,36 +273,18 @@ END_PROGRAM`
     lastUpdated: 'Jan 22, 2026',
     level: 'Advanced',
     status: 'Published',
-    overview: 'Mastering Modbus RTU, differential A/B data lines, termination resistors ($120\\Omega$), and master/slave register mapping.',
+    overview: 'Mastering Modbus RTU, differential A/B data lines, termination resistors ($120\\Omega$), and master/slate register mapping.',
     protocolFocus: 'Modbus RTU / RS-485 Backbones & Modbus TCP Ethernet Bridging.',
     hardwareBOM: ['MAX485 Transceiver Modules', 'W5500 Ethernet Module', '120Ω Resistors', 'Twisted Pair Cable'],
     youtubeEmbedId: 'dQw4w9WgXcQ',
     subsections: [
       { id: 'sub-0', title: '1. PLC Backplane and Wiring', summary: 'Understanding PLC backplane architecture and proper wiring techniques.' },
-      { id: 'sub-1', title: '2. RS-485 & Differential Signaling', summary: 'Understanding A/B data lines, termination resistors, and noise immunity in industrial environments.' },
-      { id: 'sub-2', title: '3. Modbus RTU & RS-485 Backbones', summary: 'Wiring differential data lines and multi-drop master/slave topologies.' },
-      { id: 'sub-3', title: '4. Modbus Register Mapping', summary: 'Reference table for holding registers, coils, and discrete inputs.' }
+      { id: 'sub-1', title: '2. RS-485 & Differential Signaling', summary: 'Understanding A/B data lines, termination resistors, and noise immunity in industrial environments.' }
     ],
     sections: [
       {
         title: '1. Master vs. Slave Architectures',
-        content: 'Teaching how a central CPU (Master) polls remote I/O nodes using unique register addresses over robust RS-485 serial buses.',
-        codeSnippet: `// Modbus RTU Polling Structure Example
-#include <ModbusMaster.h>
-ModbusMaster node;
-
-void setup() {
-  Serial2.begin(9600, SERIAL_8N1);
-  node.begin(1, Serial2); // Slave ID 1
-}
-
-void loop() {
-  uint8_t result = node.readHoldingRegisters(0x00, 2);
-  if (result == node.ku8MBSuccess) {
-    uint16_t sensorVal = node.getResponseBuffer(0);
-  }
-  delay(1000);
-}`
+        content: 'Teaching how a central CPU (Master) polls remote I/O nodes using unique register addresses over robust RS-485 serial buses.'
       }
     ]
   }

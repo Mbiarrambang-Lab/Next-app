@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
-  Search, FileText, BookOpen, Settings, Layers, 
+  Search, FileText, BookOpen, Settings, Layers, Wrench,
   ArrowLeft, Cpu, Radio, Factory, CheckCircle, Eye, ChevronDown, ChevronRight 
 } from 'lucide-react';
 import { curriculumDocs } from '@/app/utils/docs';
@@ -13,6 +13,7 @@ export default function DocsHubPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [expandedSlugs, setExpandedSlugs] = useState<Record<string, boolean>>({});
+  const [stationsOpen, setStationsOpen] = useState(true);
 
   const toggleExpand = (slug: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -63,27 +64,50 @@ export default function DocsHubPage() {
             <div className="space-y-1">
               <span className="text-[10px] font-bold text-gray-500 uppercase px-2 tracking-wider">Core Modules</span>
               <nav className="space-y-0.5">
-                <button onClick={() => { setSelectedSlug(null); setActiveTab('All Modules'); }} className="w-full text-left flex items-center gap-2.5 px-2.5 py-2 text-amber-400 bg-amber-950/30 font-semibold rounded-lg border border-amber-500/20 cursor-pointer">
+                <button onClick={() => { setSelectedSlug(null); setActiveTab('All Modules'); }} className={`w-full text-left flex items-center gap-2.5 px-2.5 py-2 rounded-lg border transition-colors cursor-pointer ${activeTab === 'All Modules' ? 'text-amber-400 bg-amber-950/30 font-semibold border-amber-500/20' : 'text-gray-400 border-transparent hover:text-white hover:bg-gray-800/50'}`}>
                   <BookOpen className="w-4 h-4 text-amber-500" /> All Guides & Docs
                 </button>
-                <button onClick={() => { setSelectedSlug(null); setActiveTab('Automation Basics'); }} className="w-full text-left flex items-center gap-2.5 px-2.5 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800/50 cursor-pointer">
+                <button onClick={() => { setSelectedSlug(null); setActiveTab('Automation Basics'); }} className={`w-full text-left flex items-center gap-2.5 px-2.5 py-2 rounded-lg border transition-colors cursor-pointer ${activeTab === 'Automation Basics' ? 'text-amber-400 bg-amber-950/30 font-semibold border-amber-500/20' : 'text-gray-400 border-transparent hover:text-white hover:bg-gray-800/50'}`}>
                   <Cpu className="w-4 h-4 text-gray-400" /> Beginner's Automation
                 </button>
-                <button onClick={() => { setSelectedSlug(null); setActiveTab('Communication'); }} className="w-full text-left flex items-center gap-2.5 px-2.5 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800/50 cursor-pointer">
+                <button onClick={() => { setSelectedSlug(null); setActiveTab('Communication'); }} className={`w-full text-left flex items-center gap-2.5 px-2.5 py-2 rounded-lg border transition-colors cursor-pointer ${activeTab === 'Communication' ? 'text-amber-400 bg-amber-950/30 font-semibold border-amber-500/20' : 'text-gray-400 border-transparent hover:text-white hover:bg-gray-800/50'}`}>
                   <Radio className="w-4 h-4 text-gray-400" /> Comm Protocols
+                </button>
+                <button onClick={() => { setSelectedSlug(null); setActiveTab('Hardware & Specs'); }} className={`w-full text-left flex items-center gap-2.5 px-2.5 py-2 rounded-lg border transition-colors cursor-pointer ${activeTab === 'Hardware & Specs' ? 'text-amber-400 bg-amber-950/30 font-semibold border-amber-500/20' : 'text-gray-400 border-transparent hover:text-white hover:bg-gray-800/50'}`}>
+                  <Wrench className="w-4 h-4 text-gray-400" /> Hardware & Specs
                 </button>
               </nav>
             </div>
 
+            {/* Stations Group with Expandable Sub-Tabs */}
             <div className="space-y-1 pt-2">
-              <span className="text-[10px] font-bold text-gray-500 uppercase px-2 tracking-wider">Industrial Stations</span>
-              <nav className="space-y-0.5">
-                <button onClick={() => { setSelectedSlug(null); setActiveTab('Stations > Cassava'); }} className="w-full text-left flex items-center gap-2.5 px-2.5 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800/50 cursor-pointer">
-                  <Factory className="w-4 h-4 text-amber-500" /> Cassava Processing
+              <div className="flex items-center justify-between px-2">
+                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Industrial Stations</span>
+                <button onClick={() => setStationsOpen(!stationsOpen)} className="text-gray-400 hover:text-white cursor-pointer">
+                  {stationsOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
                 </button>
-                <button onClick={() => { setSelectedSlug(null); setActiveTab('Stations > Cocoa'); }} className="w-full text-left flex items-center gap-2.5 px-2.5 py-2 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800/50 cursor-pointer">
-                  <Factory className="w-4 h-4 text-amber-500" /> Cocoa Processing
+              </div>
+              
+              <nav className="space-y-0.5 pt-1">
+                <button onClick={() => { setSelectedSlug(null); setActiveTab('Station'); }} className={`w-full text-left flex items-center gap-2.5 px-2.5 py-2 rounded-lg border transition-colors cursor-pointer ${activeTab === 'Station' ? 'text-amber-400 bg-amber-950/30 font-semibold border-amber-500/20' : 'text-gray-400 border-transparent hover:text-white hover:bg-gray-800/50'}`}>
+                  <Factory className="w-4 h-4 text-amber-500" /> All Stations Overview
                 </button>
+
+                {stationsOpen && (
+                  <div className="pl-6 space-y-1 border-l border-gray-800 ml-3 my-1">
+                    {curriculumDocs
+                      .filter(d => d.category === 'Station')
+                      .map(stationDoc => (
+                        <button
+                          key={stationDoc.slug}
+                          onClick={() => setSelectedSlug(stationDoc.slug)}
+                          className={`w-full text-left px-2 py-1.5 rounded-md text-[11px] truncate transition-colors cursor-pointer ${selectedSlug === stationDoc.slug ? 'text-amber-400 font-semibold bg-amber-500/10' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/30'}`}
+                        >
+                          • {stationDoc.title}
+                        </button>
+                      ))}
+                  </div>
+                )}
               </nav>
             </div>
           </div>
@@ -197,7 +221,7 @@ export default function DocsHubPage() {
             /* ================= TABLE LIST VIEW WITH EXPANDABLE SUBSECTIONS ================= */
             <div className="space-y-6 max-w-5xl mx-auto pb-12">
               <div className="flex items-center gap-2 border-b border-gray-800 pb-3 overflow-x-auto text-xs">
-                {['All Modules', 'Automation Basics', 'Communication', 'Hardware Specs', 'Stations > Cassava', 'Stations > Cocoa'].map((tab) => (
+                {['All Modules', 'Automation Basics', 'Communication', 'Hardware Specs', 'Station'].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
@@ -207,14 +231,14 @@ export default function DocsHubPage() {
                         : 'text-gray-400 hover:text-gray-200'
                     }`}
                   >
-                    {tab}
+                    {tab === 'Station' ? 'Industrial Stations' : tab}
                   </button>
                 ))}
               </div>
 
               <div className="space-y-3">
                 {filteredDocs
-                  .filter(doc => activeTab === 'All Modules' || doc.category === activeTab || doc.category.startsWith(activeTab))
+                  .filter(doc => activeTab === 'All Modules' || doc.category === activeTab)
                   .map((doc) => {
                     const isExpanded = expandedSlugs[doc.slug];
                     return (
@@ -232,7 +256,7 @@ export default function DocsHubPage() {
 
                           <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
                             <span className="bg-[#0d1117] border border-gray-800 px-2.5 py-1 rounded-md text-gray-300 font-mono text-[10px]">
-                              {doc.category}
+                              {doc.category === 'Station' ? 'Industrial Station' : doc.category}
                             </span>
                             <span className={`px-2.5 py-1 rounded-full border text-[10px] font-semibold ${levelStyles[doc.level]}`}>
                               {doc.level}
@@ -244,7 +268,7 @@ export default function DocsHubPage() {
                                 onClick={(e) => toggleExpand(doc.slug, e)}
                                 className="text-xs bg-[#0d1117] border border-gray-800 hover:border-amber-500/50 text-gray-300 px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors cursor-pointer"
                               >
-                                {isExpanded ? 'Hide Subsections' : 'Subsections'}
+                                {isExpanded ? 'Hide Chapters' : 'Chapters'}
                                 {isExpanded ? <ChevronDown className="w-3.5 h-3.5 text-amber-500" /> : <ChevronRight className="w-3.5 h-3.5 text-amber-500" />}
                               </button>
 
@@ -253,7 +277,7 @@ export default function DocsHubPage() {
                                 onClick={() => setSelectedSlug(doc.slug)}
                                 className="inline-flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-black px-3.5 py-1.5 rounded-lg font-bold transition-colors cursor-pointer"
                               >
-                                <Eye className="w-3.5 h-3.5" /> Read Guide
+                                <Eye className="w-3.5 h-3.5" /> Read
                               </button>
                             </div>
                           </div>
@@ -262,7 +286,7 @@ export default function DocsHubPage() {
                         {/* Expandable Subsections Accordion View */}
                         {isExpanded && (
                           <div className="bg-[#0d1117]/80 border-t border-gray-800 p-4 space-y-3 pl-11">
-                            <span className="text-[10px] font-bold text-amber-500 uppercase tracking-wider block">Included Module Chapters:</span>
+                            <span className="text-[10px] font-bold text-amber-500 uppercase tracking-wider block">Included Chapters:</span>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                               {doc.subsections.map((sub) => (
                                 <div key={sub.id} className="bg-[#161b22] border border-gray-800 p-3 rounded-xl space-y-1">
