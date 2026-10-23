@@ -11,7 +11,9 @@ export default function SignUpPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Creating account for ${name} (${email})`);
+    alert(`Account created successfully for ${name}! Redirecting to checkout...`);
+    // Redirect new users straight to the checkout page
+    window.location.href = '/checkout';
   };
 
   return (
@@ -51,7 +53,7 @@ export default function SignUpPage() {
               <input 
                 type="text" 
                 required
-                placeholder="John Mbi"
+                placeholder="Mbiarrambang Junior"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full bg-[#0d1117] border border-gray-800 rounded-xl px-4 py-2.5 pl-10 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-amber-500 transition-colors"
@@ -93,7 +95,7 @@ export default function SignUpPage() {
             type="submit"
             className="w-full bg-amber-500 hover:bg-amber-600 text-black font-extrabold text-xs py-3 rounded-xl uppercase tracking-wide transition-colors shadow-md shadow-amber-900/20 cursor-pointer mt-2"
           >
-            Register Account
+            Register & Continue
           </button>
         </form>
 

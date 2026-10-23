@@ -9,9 +9,17 @@ export default function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Signing in with account: ${email}`);
+    
+    // Grab current product query parameters from the URL if any exist
+    const params = new URLSearchParams(window.location.search);
+    const queryString = params.toString() ? `?${params.toString()}` : '';
+
+    alert(`Signing in successfully! Redirecting to checkout...`);
+    
+    // Redirect to checkout carrying the product data
+    window.location.href = `/checkout${queryString}`;
   };
 
   return (
@@ -24,8 +32,8 @@ export default function SignInPage() {
     >
       {/* Top Bar */}
       <header className="max-w-md w-mx mx-auto w-full flex justify-between items-center py-4">
-        <Link 
-          href="/shop" 
+        <Link
+          href="/shop"
           className="text-xs text-gray-300 hover:text-amber-400 border border-gray-800 bg-[#161b22] px-3.5 py-2 rounded-lg transition-colors flex items-center gap-2 font-medium"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Back to Shop
@@ -48,8 +56,8 @@ export default function SignInPage() {
             <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider block">Email Address</label>
             <div className="relative">
               <Mail className="w-4 h-4 text-gray-500 absolute left-3.5 top-3" />
-              <input 
-                type="email" 
+              <input
+                type="email"
                 required
                 placeholder="name@example.com"
                 value={email}
@@ -63,8 +71,8 @@ export default function SignInPage() {
             <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider block">Password</label>
             <div className="relative">
               <Lock className="w-4 h-4 text-gray-500 absolute left-3.5 top-3" />
-              <input 
-                type="password" 
+              <input
+                type="password"
                 required
                 placeholder="••••••••"
                 value={password}
@@ -74,7 +82,7 @@ export default function SignInPage() {
             </div>
           </div>
 
-          <button 
+          <button
             type="submit"
             className="w-full bg-amber-500 hover:bg-amber-600 text-black font-extrabold text-xs py-3 rounded-xl uppercase tracking-wide transition-colors shadow-md shadow-amber-900/20 cursor-pointer mt-2"
           >
