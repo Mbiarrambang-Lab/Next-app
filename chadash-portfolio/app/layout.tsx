@@ -3,7 +3,7 @@ import "./globals.css";
 import { CartProvider } from '@/app/context/CartContext';
 
 export const metadata: Metadata = {
-  title: "Chadash Labs // Mbiarrambang",
+  title: "Chadash Labs",
   description: "Building systems for Africa and DIYers all over the world.",
 };
 
