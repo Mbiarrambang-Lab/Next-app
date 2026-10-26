@@ -2,8 +2,25 @@
 
 import React, { useActionState, startTransition } from 'react';
 import Image from 'next/image';
-import { Cpu, ShieldCheck, Mail, ArrowUpRight, AlertTriangle, CheckCircle2, Loader2, BookOpen, ShoppingBag, Send, FlagIcon } from 'lucide-react';
+import facebookIcon from '@/public/facebook.jpeg';
+import linkedInIcon from '@/public/LinkedIn.jpeg';
+import youTubeIcon from '@/public/YouTube.jpeg';
+
+import {
+  Cpu,
+  ShieldCheck,
+  Mail,
+  ArrowUpRight,
+  AlertTriangle,
+  CheckCircle2,
+  Loader2,
+  BookOpen,
+  ShoppingBag,
+  Send,
+  FlagIcon,
+} from 'lucide-react';
 import { transmitPacket } from './utils/actions';
+
 
 export default function Home() {
   const [state, formAction, isPending] = useActionState(transmitPacket, null);
@@ -17,7 +34,7 @@ export default function Home() {
   };
 
   return (
-    <main 
+    <main
       className="min-h-screen text-[#f0f6fc] selection:bg-amber-600 selection:text-white relative font-sans"
       style={{
         backgroundColor: '#0d1117',
@@ -64,7 +81,7 @@ export default function Home() {
             Engineered in Buea, Cameroon <FlagIcon className="w-3.5 h-3.5" />
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.1] text-white">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] text-white">
             Smart automation controllers and custom hardware builds and wiring for <span className="text-amber-500">reliable performance</span>.
           </h1>
 
@@ -150,29 +167,29 @@ export default function Home() {
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-gray-400 text-xs font-medium block">Your Email Address</label>
-                  <input 
-                    name="routing" 
-                    type="email" 
-                    required 
-                    placeholder="name@example.com" 
-                    className="w-full bg-[#0d1117] border border-gray-800 rounded-lg p-3 text-sm focus:outline-none focus:border-amber-500 text-gray-200 transition-colors" 
+                  <input
+                    name="routing"
+                    type="email"
+                    required
+                    placeholder="name@example.com"
+                    className="w-full bg-[#0d1117] border border-gray-800 rounded-lg p-3 text-sm focus:outline-none focus:border-amber-500 text-gray-200 transition-colors"
                   />
                 </div>
               </div>
               <div className="space-y-1.5">
                 <label className="text-gray-400 text-xs font-medium block">What would you like to build or order?</label>
-                <textarea 
-                  name="payload" 
-                  required 
-                  rows={4} 
-                  placeholder="Tell us about your project or the products you want to buy..." 
+                <textarea
+                  name="payload"
+                  required
+                  rows={4}
+                  placeholder="Tell us about your project or the products you want to buy..."
                   className="w-full bg-[#0d1117] border border-gray-800 rounded-lg p-3 text-sm focus:outline-none focus:border-amber-500 text-gray-200 transition-colors resize-none"
                 ></textarea>
               </div>
 
-              <button 
-                type="submit" 
-                disabled={isPending} 
+              <button
+                type="submit"
+                disabled={isPending}
                 className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-amber-800/50 text-white font-bold p-3.5 rounded-lg text-sm transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed shadow-lg shadow-amber-900/20"
               >
                 {isPending ? (
@@ -188,11 +205,10 @@ export default function Home() {
               </button>
 
               {state && (
-                <div className={`mt-4 p-3.5 rounded-xl border text-xs flex items-start gap-2.5 ${
-                  state.success
-                    ? 'bg-emerald-950/40 text-emerald-300 border-emerald-500/30'
-                    : 'bg-red-950/40 text-red-300 border-red-500/30'
-                }`}>
+                <div className={`mt-4 p-3.5 rounded-xl border text-xs flex items-start gap-2.5 ${state.success
+                  ? 'bg-emerald-950/40 text-emerald-300 border-emerald-500/30'
+                  : 'bg-red-950/40 text-red-300 border-red-500/30'
+                  }`}>
                   {state.success ? <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" /> : <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" />}
                   <span>{state.message}</span>
                 </div>
@@ -211,6 +227,56 @@ export default function Home() {
             <a href="/docs" className="hover:text-amber-400 transition-colors">Documentation</a>
             <a href="#contact" className="hover:text-amber-400 transition-colors">Contact</a>
           </div>
+          <div className="follow-us flex items-center gap-4">
+            <span className="font-semibold text-gray-400">Follow us:</span>
+            <div className="flex gap-4">
+              <a
+                href="https://www.facebook.com/chadashautomation"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-opacity hover:opacity-80"
+              >
+                <Image
+                  src={facebookIcon}
+                  alt="Facebook"
+                  width={24}
+                  height={24}
+                  className="p-1 border border-gray-600 rounded-full object-contain"
+                />
+              </a>
+
+              <a
+                href="https://www.linkedin.com/company/chadash-automation"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-opacity hover:opacity-80"
+              >
+                <Image
+                  src={linkedInIcon}
+                  alt="LinkedIn"
+                  width={24}
+                  height={24}
+                  className="p-1 border border-gray-600 rounded-full object-contain"
+                />
+              </a>
+
+              <a
+                href="https://www.youtube.com/@chadashautomation"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-opacity hover:opacity-80"
+              >
+                <Image
+                  src={youTubeIcon}
+                  alt="YouTube"
+                  width={24}
+                  height={24}
+                  className="p-1 border border-gray-600 rounded-full object-contain"
+                />
+              </a>
+            </div>
+          </div>
+
         </div>
       </footer>
     </main>
