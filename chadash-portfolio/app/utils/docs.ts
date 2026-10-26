@@ -99,7 +99,7 @@ export const curriculumDocs: DocItem[] = [
   {
     slug: 'hardware-documentation-mcus',
     title: 'Hardware Documentation for MCUs',
-    category: 'Hardware Specs',
+    category: 'Hardware & Specs',
     readTime: '15 min read',
     lastUpdated: 'Jan 23, 2026',
     level: 'Beginner',
@@ -243,9 +243,84 @@ export const curriculumDocs: DocItem[] = [
     ]
   },
   {
+    slug: 'car-wash-automation',
+    title: 'Car Wash Automation',
+    category: 'Station',
+    readTime: '20 min read',
+    lastUpdated: 'Jan 21, 2026',
+    level: 'Advanced',
+    status: 'Published',
+    overview: 'Automated conveyor and bay car wash systems featuring precise chemical dosing arrays, high-pressure hydraulic loops, and real-time graywater reclamation monitoring.',
+    protocolFocus: 'Real-Time Clock (RTC) cycle scheduling, optical vehicle tracking, and bay humidity dissipation routing.',
+    hardwareBOM: [
+      'ESP32 NodeMCU Controller',
+      'DHT22 High-Precision Humidity Sensor',
+      'DS1307 I2C RTC Module',
+      'Optocoupled Multi-Channel Relay Bank',
+      'Ultrasonic Proximity Sensors (Vehicle Detection)',
+      '12V Solenoid Fluid Valves'
+    ],
+    youtubeEmbedId: 'dQw4w9WgXcQ', // Placeholder link remains intact
+    subsections: [
+      {
+        id: 'sub-1',
+        title: 'Wash Cycle Phase Scheduling',
+        summary: 'Leveraging hardware RTC registers to coordinate strict millisecond-level step switches between undercarriage rinse, active foam, and high-pressure wax cycles.'
+      },
+      {
+        id: 'sub-2',
+        title: 'Bay Humidity & Ventilation Overrides',
+        summary: 'Continuously reading ambient humidity curves to trigger forced-air extraction blowers, preventing lingering chemical vapor density and moisture build-up inside enclosed bays.'
+      }
+    ],
+    sections: [
+      {
+        title: '1. Multi-Stage Automated Execution Loop',
+        content: 'Executing timed industrial sequencing using non-blocking hardware interrupts. Once proximity sensors confirm vehicle orientation benchmarks, the system flags the RTC to record wash metadata, spins down fluid solenoids to prevent water hammer effects, and routes reclaimed wash water back through multi-stage filtration beds.'
+      }
+    ]
+  },
+  {
+    slug: 'car-assembly-line-automation',
+    title: 'Car Assembly Line Automation',
+    category: 'Station',
+    readTime: '25 min read',
+    lastUpdated: 'Oct 26, 2026',
+    level: 'Advanced',
+    status: 'Published',
+    overview: 'Robotic chassis mating and precision torque assembly loops featuring synchronous conveyor positioning, pneumatic actuators, and multi-node CAN bus monitoring.',
+    protocolFocus: 'High-speed CAN bus data logging, infrared distance tracking, and millisecond-level pneumatic solenoid sequencing.',
+    hardwareBOM: [
+      'STM32 or ESP32 CAN Bus Controller Node',
+      'MCP2515 CAN Transceiver Module',
+      'Infrared Time-of-Flight (ToF) Distance Sensors',
+      'High-Current Relay Drivers (Pneumatic Valves)',
+      'NEMA 34 Stepper Motors & Drivers (Conveyor Sync)'
+    ],
+    youtubeEmbedId: 'dQw4w9WgXcQ', // Placeholder video link
+    subsections: [
+      {
+        id: 'sub-1',
+        title: 'Chassis Alignment & Proximity Detection',
+        summary: 'Utilizing industrial Time-of-Flight sensors to calculate exact spatial orientation vectors before deploying heavy mechanical welding or framing tools.'
+      },
+      {
+        id: 'sub-2',
+        title: 'CAN Bus Telemetry Logging',
+        summary: 'Aggregating localized motor telemetry, air pressure drops, and error packets over a shared industrial network layer to prevent critical assembly bottlenecks.'
+      }
+    ],
+    sections: [
+      {
+        title: '1. Synchronized Assembly Interlocking Logic',
+        content: 'Managing assembly line integrity through strict hardware interlocks. The controller continuously samples distance sensors to verify the vehicle frame is seated perfectly. If misalignment is detected, the node broadcasts an interrupt frame across the CAN bus network, completely freezing the conveyor drive motors to protect the multi-axis robotic sub-assemblies.'
+      }
+    ]
+  },
+  {
     slug: 'hardware-documentation-chadash-devices',
     title: 'Hardware Documentation for our devices (IEC 61131-2)',
-    category: 'Hardware Specs',
+    category: 'Hardware & Specs',
     readTime: '15 min read',
     lastUpdated: 'Jan 23, 2026',
     level: 'Advanced',

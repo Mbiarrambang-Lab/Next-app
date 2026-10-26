@@ -44,9 +44,6 @@ export default function DocsHubPage() {
               <div className="w-6 h-6 rounded-lg bg-amber-500 flex items-center justify-center font-bold text-black text-xs">C</div>
               <span className="font-extrabold text-white text-sm tracking-tight">Chadash Curriculum</span>
             </div>
-            <Link href="/" className="text-gray-400 hover:text-amber-400">
-              <ArrowLeft className="w-4 h-4" />
-            </Link>
           </div>
 
           <div className="relative px-2">
@@ -133,6 +130,9 @@ export default function DocsHubPage() {
             <p className="text-gray-400 text-xs mt-1">Open-access manuals, automation guides, and industrial station workflows for learners and engineers.</p>
           </div>
           <div className="flex items-center gap-3">
+            <Link href="/" className="items-center gap-1.5 text-gray-400 hover:text-amber-400">
+              <ArrowLeft className="w-4 h-4" />
+            </Link>
             <Link href="/shop" className="bg-[#161b22] border border-gray-800 hover:border-amber-500 text-gray-300 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors">
               Hardware Shop
             </Link>
@@ -221,7 +221,7 @@ export default function DocsHubPage() {
             /* ================= TABLE LIST VIEW WITH EXPANDABLE SUBSECTIONS ================= */
             <div className="space-y-6 max-w-5xl mx-auto pb-12">
               <div className="flex items-center gap-2 border-b border-gray-800 pb-3 overflow-x-auto text-xs">
-                {['All Modules', 'Automation Basics', 'Communication', 'Hardware Specs', 'Station'].map((tab) => (
+                {['All Modules', 'Automation Basics', 'Communication', 'Hardware & Specs', 'Station'].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
