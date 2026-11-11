@@ -19,6 +19,14 @@ export interface DocItem {
   youtubeEmbedId?: string;
   subsections: SubSection[];
   sections: { title: string; content: string; codeSnippet?: string }[];
+  stationSpecs?: {
+    subtitle: string;
+    image: string;
+    power: string;
+    channels: string;
+    enclosure: string;
+    application: string;
+  };
 }
 
 export const curriculumDocs: DocItem[] = [
@@ -217,7 +225,15 @@ export const curriculumDocs: DocItem[] = [
         title: '1. System Architecture & Safety Interlocks',
         content: 'The Cassava Processing Station requires failsafe mechanical cut-offs linked directly to hardware interrupt pins.'
       }
-    ]
+    ],
+    stationSpecs: {
+      subtitle: 'Agricultural Processing',
+      image: '/images/plc-x1.jpg',
+      power: '24V DC / AC Relays',
+      channels: '8 Opto In / 6 Relay Out',
+      enclosure: 'IP54 DIN-Rail Box',
+      application: 'Cassava Grating & Drying',
+    }
   },
   {
     slug: 'station-cocoa-fermentation',
@@ -240,7 +256,15 @@ export const curriculumDocs: DocItem[] = [
         title: '1. Fermentation Batch Tracking',
         content: 'Tracking exact temperature curves across 5-day bean fermentation cycles to ensure export-grade quality.'
       }
-    ]
+    ],
+    stationSpecs: {
+      subtitle: 'Fermentation & Drying',
+      image: '/images/picow-shell.jpg',
+      power: '5V-12V DC / Battery',
+      channels: 'Wi-Fi + 4 Sensor Ports',
+      enclosure: '3D-Printed ABS Shell',
+      application: 'Cocoa Batch Monitoring',
+    }
   },
   {
     slug: 'car-wash-automation',
@@ -260,7 +284,7 @@ export const curriculumDocs: DocItem[] = [
       'Ultrasonic Proximity Sensors (Vehicle Detection)',
       '12V Solenoid Fluid Valves'
     ],
-    youtubeEmbedId: 'dQw4w9WgXcQ', // Placeholder link remains intact
+    youtubeEmbedId: 'dQw4w9WgXcQ',
     subsections: [
       {
         id: 'sub-1',
@@ -278,7 +302,15 @@ export const curriculumDocs: DocItem[] = [
         title: '1. Multi-Stage Automated Execution Loop',
         content: 'Executing timed industrial sequencing using non-blocking hardware interrupts. Once proximity sensors confirm vehicle orientation benchmarks, the system flags the RTC to record wash metadata, spins down fluid solenoids to prevent water hammer effects, and routes reclaimed wash water back through multi-stage filtration beds.'
       }
-    ]
+    ],
+    stationSpecs: {
+      subtitle: 'Bay Wash Controller',
+      image: '/images/expansion-card.jpg',
+      power: '12V DC / 24V Solenoids',
+      channels: '12 Opto In / 8 Relay Out',
+      enclosure: 'IP65 Weatherproof Box',
+      application: 'Car Wash & Water Reclamation',
+    }
   },
   {
     slug: 'car-assembly-line-automation',
@@ -297,7 +329,7 @@ export const curriculumDocs: DocItem[] = [
       'High-Current Relay Drivers (Pneumatic Valves)',
       'NEMA 34 Stepper Motors & Drivers (Conveyor Sync)'
     ],
-    youtubeEmbedId: 'dQw4w9WgXcQ', // Placeholder video link
+    youtubeEmbedId: 'dQw4w9WgXcQ',
     subsections: [
       {
         id: 'sub-1',
@@ -315,7 +347,15 @@ export const curriculumDocs: DocItem[] = [
         title: '1. Synchronized Assembly Interlocking Logic',
         content: 'Managing assembly line integrity through strict hardware interlocks. The controller continuously samples distance sensors to verify the vehicle frame is seated perfectly. If misalignment is detected, the node broadcasts an interrupt frame across the CAN bus network, completely freezing the conveyor drive motors to protect the multi-axis robotic sub-assemblies.'
       }
-    ]
+    ],
+    stationSpecs: {
+      subtitle: 'CAN Bus Assembly Node',
+      image: '/images/plc-x1.jpg',
+      power: '24V DC Industrial Bus',
+      channels: 'CAN Bus + 16 I/O',
+      enclosure: 'DIN-Rail Industrial Rack',
+      application: 'Robotic Chassis & Conveyor Sync',
+    }
   },
   {
     slug: 'hardware-documentation-chadash-devices',
@@ -364,3 +404,12 @@ export const curriculumDocs: DocItem[] = [
     ]
   }
 ];
+
+// Dynamically generate STATIONS from curriculumDocs items that have stationSpecs defined
+export const STATIONS = curriculumDocs
+  .filter((doc) => doc.stationSpecs)
+  .map((doc) => ({
+    name: doc.title,
+    slug: doc.slug,
+    ...doc.stationSpecs!,
+  }));
