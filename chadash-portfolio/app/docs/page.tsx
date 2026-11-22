@@ -12,6 +12,7 @@ export default function DocsHubPage() {
   const [activeTab, setActiveTab] = useState('All Modules');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
+  const [selectedSubsectionId, setSelectedSubsectionId] = useState<string | null>(null);
   const [expandedSlugs, setExpandedSlugs] = useState<Record<string, boolean>>({});
   const [stationsOpen, setStationsOpen] = useState(true);
 
@@ -21,6 +22,7 @@ export default function DocsHubPage() {
   };
 
   const selectedDoc = curriculumDocs.find(doc => doc.slug === selectedSlug);
+  const selectedSubsection = selectedDoc?.subsections.find(subsection => subsection.id === selectedSubsectionId);
 
   const filteredDocs = curriculumDocs.filter(doc => 
     doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -148,7 +150,10 @@ export default function DocsHubPage() {
             /* ================= ACTIVE DOCUMENT VIEW ================= */
             <div className="p-2 md:p-4 space-y-8 max-w-4xl mx-auto w-full">
               <button 
-                onClick={() => setSelectedSlug(null)}
+                onClick={() => {
+                  setSelectedSlug(null);
+                  setSelectedSubsectionId(null);
+                }}
                 className="text-xs text-amber-400 hover:underline flex items-center gap-1.5 font-semibold bg-[#161b22] border border-gray-800 px-3.5 py-2 rounded-xl w-fit cursor-pointer"
               >
                 <ArrowLeft className="w-3.5 h-3.5" /> Back to Curriculum Table
@@ -165,6 +170,15 @@ export default function DocsHubPage() {
                   {selectedDoc.overview}
                 </p>
               </div>
+
+              {selectedSubsection && (
+                <section className="space-y-3 bg-amber-950/20 border border-amber-500/30 rounded-2xl p-5">
+                  <h2 className="text-sm font-bold text-amber-300">{selectedSubsection.title}</h2>
+                  <p className="text-xs text-gray-200 leading-relaxed whitespace-pre-line">
+                    {selectedSubsection.content ?? selectedSubsection.summary}
+                  </p>
+                </section>
+              )}
 
               {selectedDoc.youtubeEmbedId && (
                 <div className="space-y-2 bg-[#161b22] border border-gray-800 rounded-2xl p-4 shadow-xl">
@@ -274,7 +288,10 @@ export default function DocsHubPage() {
 
                               {/* Read Full Guide Button */}
                               <button 
-                                onClick={() => setSelectedSlug(doc.slug)}
+                                onClick={() => {
+                                  setSelectedSubsectionId(null);
+                                  setSelectedSlug(doc.slug);
+                                }}
                                 className="inline-flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-black px-3.5 py-1.5 rounded-lg font-bold transition-colors cursor-pointer"
                               >
                                 <Eye className="w-3.5 h-3.5" /> Read
@@ -289,10 +306,19 @@ export default function DocsHubPage() {
                             <span className="text-[10px] font-bold text-amber-500 uppercase tracking-wider block">Included Chapters:</span>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                               {doc.subsections.map((sub) => (
-                                <div key={sub.id} className="bg-[#161b22] border border-gray-800 p-3 rounded-xl space-y-1">
+                                <button
+                                  key={sub.id}
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedSubsectionId(sub.id);
+                                    setSelectedSlug(doc.slug);
+                                  }}
+                                  className="w-full text-left bg-[#161b22] border border-gray-800 hover:border-amber-500/60 hover:bg-amber-950/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 p-3 rounded-xl space-y-1 transition-colors cursor-pointer"
+                                >
                                   <h4 className="text-xs font-bold text-white">{sub.title}</h4>
                                   <p className="text-[11px] text-gray-400 leading-relaxed">{sub.summary}</p>
-                                </div>
+                                  <span className="text-[10px] text-amber-400">Open chapter</span>
+                                </button>
                               ))}
                             </div>
                           </div>

@@ -10,6 +10,7 @@ export interface SubSection {
   id: string;
   title: string;
   summary: string;
+  content?: string;
   codeSnippet?: string;
 }
 
@@ -189,26 +190,343 @@ export const curriculumDocs: DocItem[] = [
   },
   {
     slug: 'communication-networking-uart-i2c-spi-ethernet-wifi',
-    title: 'Basic MCU Communications (UART, I2C, SPI, Ethernet, WiFi)',
+    title: 'Beginner Communication Protocols',
     category: 'Communication',
-    readTime: '20 min read',
+    readTime: '15 min read',
     lastUpdated: 'Jan 22, 2026',
-    level: 'Intermediate',
+    level: 'Beginner',
     status: 'Published',
-    overview: 'Understanding asynchronous serial communication, I2C addressing, SPI synchronous buses, and wireless IoT protocols across microcontroller nodes.',
-    protocolFocus: 'UART, I2C, SPI, Ethernet (W5500), and Wi-Fi Transceivers.',
-    hardwareBOM: ['MAX485 Transceiver', 'W5500 Ethernet Module', 'ESP32 Wi-Fi Node', 'Jumper Wires'],
+    overview: 'Start with common wired interfaces used to connect microcontrollers to computers, sensors, and nearby peripherals.',
+    protocolFocus: 'UART, I2C, SPI, and USB.',
+    hardwareBOM: ['Arduino or ESP32 Controller', 'USB-to-Serial Adapter', 'I2C Sensor or RTC Module', 'SPI Peripheral', 'Jumper Wires'],
     youtubeEmbedId: 'dQw4w9WgXcQ',
     subsections: [
-      { id: 'sub-0', title: '1. UART Communication', summary: 'Understanding UART communication principles and proper wiring techniques.' },
-      { id: 'sub-1', title: '2. I2C Communication', summary: 'Understanding I2C communication principles and proper wiring techniques.' },
-      { id: 'sub-2', title: '3. SPI Communication', summary: 'Understanding SPI communication principles and proper wiring techniques.' },
-      { id: 'sub-3', title: '4. Ethernet & WiFi', summary: 'Understanding Ethernet and WiFi communication principles and proper wiring techniques.' }
+      {
+        id: 'sub-0',
+        title: '1. UART Communication',
+        summary: 'Understanding UART communication principles and proper wiring techniques.',
+        content: String.raw`UART is an asynchronous, point-to-point serial interface. Connect TX to the other device’s RX, RX to TX, and share a signal ground; configure both endpoints for the same baud rate, data bits, parity, and stop bits. UART is commonly used for console access, GPS modules, and simple MCU-to-MCU links.
+
+How UART works
+UART (Universal Asynchronous Receiver/Transmitter) sends serial data without a shared clock line.
+
+Two devices agree on:
+
+Baud rate (bit rate)
+Data bits (often 8)
+Parity (none/even/odd)
+Stop bits (1 or 2)
+This is commonly written as 115200 8N1.
+
+Each frame typically includes:
+
+1 start bit (low)
+5 to 9 data bits
+optional parity
+1 or more stop bits (high)
+TX/RX communication
+TX of device A goes to RX of device B
+RX of device A goes to TX of device B
+Ground reference must be shared
+
+flowchart LR
+  MCU_A_TX --> MCU_B_RX
+  MCU_B_TX --> MCU_A_RX
+  GND_A --- GND_B
+
+Asynchronous communication characteristics
+Because there is no separate clock wire, timing tolerance matters. Internal clocks must be accurate enough so sampling points stay valid across the frame.
+
+Typical baud rates
+9600
+19200
+38400
+57600
+115200
+230400
+921600
+1M+ (platform dependent)
+
+Advantages
+Very simple hardware and software
+Low pin count (TX, RX, GND)
+Excellent for logs, CLI, and bootloader interfaces
+Limitations
+Usually point-to-point only
+No built-in addressing/arbitration
+No inherent error correction (beyond parity)
+Limited long-distance robustness unless converted to RS-232/RS-485 levels
+Typical use cases
+Debug console from MCU to USB-UART adapter
+GNSS and cellular module interfaces
+Bootloader flashing and diagnostics
+Console access to Linux SBCs (Raspberry Pi, custom SoMs)
+
+STM32 UART debug example (HAL, C)
+#include "usart.h"
+#include <string.h>
+
+void debug_log(const char *msg)
+{
+    HAL_UART_Transmit(&huart2, (uint8_t *)msg, strlen(msg), 100);
+}
+
+int main(void)
+{
+    HAL_Init();
+    SystemClock_Config();
+    MX_USART2_UART_Init();
+
+    debug_log("System booted\r\n");
+
+    while (1) {
+        debug_log("Heartbeat\r\n");
+        HAL_Delay(1000);
+    }
+}`,
+      },
+      {
+        id: 'sub-2',
+        title: '2. I2C Communication',
+        summary: 'Understanding I2C communication principles and proper wiring techniques.',
+        content: String.raw`I2C (Inter-Integrated Circuit) is a synchronous, addressed, multi-drop bus using two lines.
+
+I2C signal lines
+SDA: Serial Data
+SCL: Serial Clock
+Both are open-drain/open-collector style, requiring pull-up resistors.
+
+Addressing and multi-device communication
+7-bit addressing is most common
+10-bit addressing exists for larger address space
+Master initiates communication with START condition and address+R/W bit
+Multi-master capability
+I2C supports multi-master arbitration in theory and in many controllers. In practice, many designs use single master for simplicity.
+
+Pull-up resistors and why they matter
+Since lines are open-drain, devices pull low but never drive high. Pull-ups define rise time and affect maximum speed and bus stability.
+
+Typical values: 1 kOhm to 10 kOhm depending on voltage, bus capacitance, speed, and node count.
+
+Advantages
+Very low pin count
+Easy to connect many low-speed peripherals
+Address-based communication reduces CS line explosion
+Disadvantages
+Slower than SPI for high-throughput needs
+Bus capacitance limits speed and length
+Address collisions possible
+Debugging bus lockups can be tricky
+Common use cases
+Temperature/pressure sensors
+RTC devices
+EEPROM
+PMIC configuration and board management
+STM32 I2C sensor read example (HAL, C)
+#include "i2c.h"
+#include <stdint.h>
+
+#define TMP102_ADDR       (0x48 << 1) // HAL expects shifted 8-bit address
+#define TMP102_REG_TEMP   0x00
+
+float read_temp_c(void)
+{
+    uint8_t reg = TMP102_REG_TEMP;
+    uint8_t raw[2] = {0};
+
+    HAL_I2C_Master_Transmit(&hi2c1, TMP102_ADDR, &reg, 1, 100);
+    HAL_I2C_Master_Receive(&hi2c1, TMP102_ADDR, raw, 2, 100);
+
+    int16_t value = (int16_t)((raw[0] << 8) | raw[1]);
+    value >>= 4;
+    if (value & 0x0800) value |= 0xF000; // sign extend
+
+    return value * 0.0625f;
+}
+Debug note: If the I2C bus hangs low, check pull-up sizing, clock stretching support, and recovery sequence (toggle SCL manually and reinit peripheral).
+`
+      },
+      {
+        id: 'sub-3',
+        title: '3. SPI Communication',
+        summary: 'Understanding SPI communication principles and proper wiring techniques.',
+        content: String.raw`SPI (Serial Peripheral Interface) is a synchronous master-slave bus optimized for short-distance, high-speed communication.
+
+SPI signal lines
+MOSI: Master Out, Slave In
+MISO: Master In, Slave Out
+SCK: Serial Clock from master
+CS/SS: Chip Select (per slave, typically active low)
+flowchart LR
+  M[Master MCU]
+  S1[Flash]
+  S2[Display]
+  S3[ADC]
+  M -- MOSI/MISO/SCK --> S1
+  M -- MOSI/MISO/SCK --> S2
+  M -- MOSI/MISO/SCK --> S3
+  M -- CS1 --> S1
+  M -- CS2 --> S2
+  M -- CS3 --> S3
+Full-duplex communication
+SPI shifts bits in both directions simultaneously. While master sends one byte, it also receives one byte.
+
+Master/slave architecture
+One master controls clock and selects active slave
+Multiple slaves can share MOSI/MISO/SCK, each with own CS line
+Advantages
+High throughput compared with UART/I2C
+Simple framing for many peripherals
+Deterministic timing (clocked by master)
+Good for low-latency peripheral transfers
+Disadvantages
+More wires than I2C
+No built-in addressing
+No native multi-master arbitration in common usage
+Longer distances are problematic (signal integrity)
+Common SPI peripherals
+NOR/NAND flash memory
+TFT/OLED displays
+Fast sensors (IMU, ADC)
+DAC/ADC converters
+Linux userspace SPI example (spidev, C)
+#include <fcntl.h>
+#include <linux/spi/spidev.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
+
+int main(void)
+{
+    int fd = open("/dev/spidev0.0", O_RDWR);
+    if (fd < 0) return 1;
+
+    uint8_t mode = SPI_MODE_0;
+    uint32_t speed = 10000000; // 10 MHz
+    ioctl(fd, SPI_IOC_WR_MODE, &mode);
+    ioctl(fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
+
+    uint8_t tx[] = {0x9F, 0x00, 0x00, 0x00}; // JEDEC ID command
+    uint8_t rx[sizeof(tx)] = {0};
+
+    struct spi_ioc_transfer tr = {
+        .tx_buf = (unsigned long)tx,
+        .rx_buf = (unsigned long)rx,
+        .len = sizeof(tx),
+        .speed_hz = speed,
+        .bits_per_word = 8,
+    };
+
+    if (ioctl(fd, SPI_IOC_MESSAGE(1), &tr) < 1) {
+        close(fd);
+        return 2;
+    }
+
+    printf("Flash ID: %02X %02X %02X\n", rx[1], rx[2], rx[3]);
+    close(fd);
+    return 0;
+}`
+      },
+      {
+        id: 'sub-6',
+        title: '4. USB',
+        summary: 'Using USB for PC peripherals, firmware updates, CDC serial links, and host-centric device communication.',
+        content: String.raw`USB Explained: Host/Device Model, Classes, and Power
+USB is ubiquitous but more complex than UART/SPI/I2C.
+
+Host/device model
+One host controls bus transactions
+One or more devices respond
+Hubs expand topology
+Most MCUs implement USB device mode. Some support OTG/host.
+
+USB classes in embedded products
+Common classes:
+
+CDC ACM (virtual serial port)
+HID (human interface device)
+MSC (mass storage)
+Audio, Video, DFU (device firmware update)
+Power delivery basics
+USB can supply power (current limits depend on version/negotiation)
+USB-C with PD enables higher power profiles
+Embedded design must handle inrush, protection, and role negotiation correctly
+Typical embedded applications
+USB-to-serial debug and CLI
+Firmware update via DFU or MSC drag-and-drop
+Data logger export as mass storage
+Human interface accessories
+Common mistake: Treating USB like “just serial.” Enumeration, descriptors, endpoint management, and host behavior add significant integration complexity.`
+      }
     ],
     sections: [
       {
-        title: '1. Serial Protocol Overview',
-        content: 'Comparing single-wire asynchronous framing (UART) with multi-device synchronous buses (I2C/SPI) for local sensor integration.'
+        title: 'Choosing a First Interface',
+        content: 'Use UART for a simple point-to-point serial link, I2C when several nearby addressed peripherals share two signal lines, SPI when a peripheral needs faster synchronous transfers, and USB when connecting a device to a computer or USB host. Check voltage levels and the hardware datasheet before wiring.'
+      }
+    ]
+  },
+  {
+    slug: 'intermediate-communication-protocols',
+    title: 'Intermediate Communication Protocols',
+    category: 'Communication',
+    readTime: '25 min read',
+    lastUpdated: 'Jan 22, 2026',
+    level: 'Intermediate',
+    status: 'Published',
+    overview: 'Build on basic serial interfaces with networked, differential, and industrial protocols for multi-node systems and connected devices.',
+    protocolFocus: 'USART synchronous mode, CAN/CAN FD, RS-232, RS-485, Ethernet, Wi-Fi, LIN, Modbus RTU/TCP, and MQTT.',
+    hardwareBOM: ['CAN Transceiver', 'MAX485 Transceiver', 'W5500 Ethernet Module', 'ESP32 Wi-Fi Node', 'LIN Transceiver', 'Jumper Wires'],
+    youtubeEmbedId: 'dQw4w9WgXcQ',
+    subsections: [
+      {
+        id: 'sub-0',
+        title: '1. USART Communication',
+        summary: 'Understanding synchronous and asynchronous USART operating modes.',
+        content: 'USART hardware supports asynchronous serial operation like UART and, on many MCUs, a synchronous mode using a clock signal. In asynchronous mode, match baud rate and frame settings at both ends; in synchronous mode, also configure clock polarity, phase, and direction as required by the device.'
+      },
+      {
+        id: 'sub-1',
+        title: '2. CAN and CAN FD',
+        summary: 'Using multi-node CAN arbitration and the higher-speed CAN FD data phase for automotive and industrial equipment.',
+        content: 'CAN is a differential, multi-node bus where message identifiers arbitrate access and help prioritize traffic. Use a suitable CAN transceiver, a correctly terminated trunk (typically 120 ohms at each physical end), and keep stubs short. CAN FD supports larger payloads and a faster data phase; all nodes must support the selected frame format and bit timing.'
+      },
+      {
+        id: 'sub-2',
+        title: '3. RS-232 and RS-485',
+        summary: 'Comparing point-to-point RS-232 with long-distance, multi-drop RS-485 differential signaling.',
+        content: 'RS-232 is a single-ended point-to-point serial link commonly used for legacy equipment and service consoles. RS-485 uses differential A/B signaling for better noise immunity and multi-drop networks; use a twisted pair, terminate the two ends of the trunk, and control driver enable so only one half-duplex node transmits at a time.'
+      },
+      {
+        id: 'sub-3',
+        title: '4. Ethernet and Wi-Fi',
+        summary: 'Connecting controllers to switched LAN networks and wireless IoT infrastructure through Ethernet and Wi-Fi.',
+        content: 'Ethernet connects nodes through switches and typically requires correct link hardware, IP configuration, and network services. Wi-Fi connects through an access point and adds radio coverage, authentication, and interference considerations. Both can carry application protocols such as HTTP, Modbus TCP, or MQTT; secure networks with appropriate credentials and access controls.'
+      },
+      {
+        id: 'sub-4',
+        title: '5. LIN Bus',
+        summary: 'Using the low-cost, master-controlled LIN bus for automotive body electronics and local subnets.',
+        content: 'LIN is a low-cost, single-wire serial network with one master scheduling communication to multiple slaves. The master’s schedule table determines when frames are sent, making timing predictable for simple body electronics. Use a LIN transceiver and configure node identifiers and frame schedules consistently.'
+      },
+      {
+        id: 'sub-5',
+        title: '6. Modbus RTU and Modbus TCP',
+        summary: 'Polling industrial devices over serial RS-485 or encapsulating Modbus requests over Ethernet TCP.',
+        content: 'Modbus RTU frames are transmitted over serial links, commonly RS-485, and use device addresses plus CRC checks. Modbus TCP carries Modbus requests over Ethernet TCP and uses a transaction identifier rather than the RTU CRC. For either variant, map register addresses and data types to the equipment documentation and respect device timing limits.'
+      },
+      {
+        id: 'sub-6',
+        title: '7. MQTT',
+        summary: 'Publishing telemetry and subscribing to commands through lightweight broker-based MQTT messaging.',
+        content: 'MQTT is a broker-based publish/subscribe messaging protocol commonly used for IoT telemetry. Clients publish to named topics and subscribe to topics of interest; choose QoS based on delivery needs, use retained messages and last-will messages deliberately, and protect deployments with TLS and per-client authentication.'
+      }
+    ],
+    sections: [
+      {
+        title: 'Matching Protocols to a System',
+        content: 'Use CAN or LIN for suitable multi-node control networks, RS-485 for robust serial links, Ethernet or Wi-Fi for IP networks, Modbus for exchanging industrial registers, and MQTT for broker-based telemetry. Confirm topology, distance, timing, device support, and security needs before selecting a protocol.'
       }
     ]
   },
